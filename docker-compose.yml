@@ -1,31 +1,35 @@
-version: '3'
+version: '3.8'
 
 services:
   payload:
-    image: node:18-alpine
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
       - '3000:3000'
-    volumes:
-      - .:/home/node/app
-      - node_modules:/home/node/app/node_modules
-    working_dir: /home/node/app/
-    command: sh -c "yarn install && yarn dev"
+    environment:
+      - DATABASE_URL=postgresql://payload:payload@db:5432/payload
+      - PAYLOAD_SECRET=${PAYLOAD_SECRET}
+      - NEXT_PUBLIC_SERVER_URL=${NEXT_PUBLIC_SERVER_URL}
     depends_on:
-      - mongo
-    env_file:
-      - .env
+      db:
+        condition: service_healthy
+    restart: always
 
-  mongo:
-    image: mongo:latest
-    ports:
-      - '27017:27017'
-    command:
-      - --storageEngine=wiredTiger
+  db:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_USER=payload
+      - POSTGRES_PASSWORD=payload
+      - POSTGRES_DB=payload
     volumes:
-      - data:/data/db
-    logging:
-      driver: none
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U payload -d payload"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: always
 
 volumes:
-  data:
-  node_modules:
+  postgres_data:
