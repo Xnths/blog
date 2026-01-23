@@ -2,6 +2,7 @@ version: '3.8'
 
 services:
   payload:
+    container_name: blog-payload
     build:
       context: .
       dockerfile: Dockerfile
@@ -17,6 +18,7 @@ services:
     restart: always
 
   db:
+    container_name: blog-db
     image: postgres:15-alpine
     environment:
       - POSTGRES_USER=payload
