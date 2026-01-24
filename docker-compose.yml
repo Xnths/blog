@@ -65,7 +65,7 @@ networks:
   blog-net:
     driver: bridge
   cloudflare-net:
-    external: true
+    driver: bridge
 
 volumes:
   postgres_data:
