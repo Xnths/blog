@@ -54,7 +54,7 @@ services:
       - .env
     environment:
       - CLOUDFLARE_TUNNEL_ID=${CLOUDFLARE_TUNNEL_ID}
-    command: tunnel run
+    command: tunnel run ${CLOUDFLARE_TUNNEL_ID}
     volumes:
       - ./cloudflared:/etc/cloudflared
     networks:
