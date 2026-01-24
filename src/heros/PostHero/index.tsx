@@ -5,6 +5,7 @@ import type { Post } from '@/payload-types'
 
 import { Media } from '@/components/Media'
 import { formatAuthors } from '@/utilities/formatAuthors'
+import RichText from '@/components/RichText'
 
 export const PostHero: React.FC<{
   post: Post
@@ -15,59 +16,52 @@ export const PostHero: React.FC<{
     populatedAuthors && populatedAuthors.length > 0 && formatAuthors(populatedAuthors) !== ''
 
   return (
-    <div className="relative -mt-[10.4rem] flex items-end">
-      <div className="container z-10 relative lg:grid lg:grid-cols-[1fr_48rem_1fr] text-white pb-8">
-        <div className="col-start-1 col-span-1 md:col-start-2 md:col-span-2">
-          <div className="uppercase text-sm mb-6">
-            {categories?.map((category, index) => {
-              if (typeof category === 'object' && category !== null) {
-                const { title: categoryTitle } = category
-
-                const titleToUse = categoryTitle || 'Untitled category'
-
-                const isLast = index === categories.length - 1
-
-                return (
-                  <React.Fragment key={index}>
-                    {titleToUse}
-                    {!isLast && <React.Fragment>, &nbsp;</React.Fragment>}
-                  </React.Fragment>
-                )
-              }
-              return null
-            })}
-          </div>
-
-          <div className="">
-            <h1 className="mb-6 text-3xl md:text-5xl lg:text-6xl">{title}</h1>
-          </div>
-
-          <div className="flex flex-col md:flex-row gap-4 md:gap-16">
-            {hasAuthors && (
-              <div className="flex flex-col gap-4">
-                <div className="flex flex-col gap-1">
-                  <p className="text-sm">Author</p>
-
-                  <p>{formatAuthors(populatedAuthors)}</p>
-                </div>
-              </div>
-            )}
-            {publishedAt && (
-              <div className="flex flex-col gap-1">
-                <p className="text-sm">Date Published</p>
-
-                <time dateTime={publishedAt}>{formatDateTime(publishedAt)}</time>
-              </div>
-            )}
-          </div>
-        </div>
+    <div className="container py-24 mb-12 border-b border-border text-center">
+      <div className="uppercase text-xs tracking-widest text-muted-foreground mb-8 font-sans">
+        {categories?.map((category, index) => {
+          if (typeof category === 'object' && category !== null) {
+            const { title: categoryTitle } = category
+            const isLast = index === categories.length - 1
+            return (
+              <React.Fragment key={index}>
+                {categoryTitle}
+                {!isLast && <>&nbsp;•&nbsp;</>}
+              </React.Fragment>
+            )
+          }
+          return null
+        })}
       </div>
-      <div className="min-h-[80vh] select-none">
-        {heroImage && typeof heroImage !== 'string' && (
-          <Media fill priority imgClassName="-z-10 object-cover" resource={heroImage} />
+
+      <h1 className="text-4xl md:text-5xl lg:text-6xl mb-12 max-w-4xl mx-auto leading-tight">
+        {title}
+      </h1>
+
+      <div className="flex flex-col items-center gap-4 text-sm font-sans uppercase tracking-wider">
+        {hasAuthors && (
+          <div>
+            <p className="text-muted-foreground mb-1 font-bold">Authors</p>
+            <p className="text-primary">{formatAuthors(populatedAuthors)}</p>
+          </div>
         )}
-        <div className="absolute pointer-events-none left-0 bottom-0 w-full h-1/2 bg-linear-to-t from-black to-transparent" />
+        {publishedAt && (
+          <div>
+            <p className="text-muted-foreground mb-1 font-bold">Published</p>
+            <time dateTime={publishedAt}>{formatDateTime(publishedAt)}</time>
+          </div>
+        )}
       </div>
+
+      {heroImage && typeof heroImage === 'object' && (
+        <div className="mt-16 max-w-4xl mx-auto">
+          <Media priority resource={heroImage} />
+          {heroImage.caption && (
+            <div className="mt-4 text-sm text-muted-foreground italic">
+              <RichText data={heroImage.caption} enableGutter={false} />
+            </div>
+          )}
+        </div>
+      )}
     </div>
   )
 }

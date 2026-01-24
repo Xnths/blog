@@ -27,7 +27,7 @@ COPY . .
 # Enable corepack for pnpm
 RUN corepack enable pnpm
 
-RUN pnpm run build
+RUN IS_BUILDING=true pnpm run build
 
 # Production image, copy all the files and run next
 FROM base AS runner

@@ -14,20 +14,23 @@ export async function Footer() {
   const navItems = footerData?.navItems || []
 
   return (
-    <footer className="mt-auto border-t border-border bg-black dark:bg-card text-white">
-      <div className="container py-8 gap-8 flex flex-col md:flex-row md:justify-between">
+    <footer className="mt-24 border-t border-border bg-background text-foreground">
+      <div className="container py-12 gap-8 flex flex-col md:flex-row md:justify-between items-center">
         <Link className="flex items-center" href="/">
           <Logo />
         </Link>
 
-        <div className="flex flex-col-reverse items-start md:flex-row gap-4 md:items-center">
-          <ThemeSelector />
-          <nav className="flex flex-col md:flex-row gap-4">
+        <div className="flex flex-col items-center md:flex-row gap-8">
+          <nav className="flex flex-col md:flex-row gap-6">
             {navItems.map(({ link }, i) => {
-              return <CMSLink className="text-white" key={i} {...link} />
+              return <CMSLink className="text-foreground hover:underline" key={i} {...link} />
             })}
           </nav>
+          <ThemeSelector />
         </div>
+      </div>
+      <div className="container pb-12 text-center text-sm text-muted-foreground uppercase tracking-widest font-sans">
+        © {new Date().getFullYear()} — Scientific Journal Edition
       </div>
     </footer>
   )
