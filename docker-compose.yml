@@ -52,9 +52,7 @@ services:
     container_name: blog-cloudflared
     env_file:
       - .env
-    environment:
-      - CLOUDFLARE_TUNNEL_ID=${CLOUDFLARE_TUNNEL_ID}
-    command: tunnel run --protocol http2 --edge-port 443 ${CLOUDFLARE_TUNNEL_ID}
+    command: tunnel run
     volumes:
       - ./cloudflared:/etc/cloudflared
     networks:
