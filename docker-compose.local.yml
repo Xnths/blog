@@ -1,0 +1,41 @@
+services:
+  blog-payload:
+    container_name: blog-payload-local
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@blog-db-local:5432/${POSTGRES_DB}
+      - PAYLOAD_SECRET=${PAYLOAD_SECRET}
+      - NEXT_PUBLIC_SERVER_URL=http://localhost:3000
+    depends_on:
+      blog-db-local:
+        condition: service_healthy
+    networks:
+      - blog-net-local
+    ports:
+      - "3000:3000"
+
+  blog-db-local:
+    container_name: blog-db-local
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+    volumes:
+      - postgres_data_local:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - blog-net-local
+
+networks:
+  blog-net-local:
+    driver: bridge
+
+volumes:
+  postgres_data_local:

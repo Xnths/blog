@@ -67,7 +67,7 @@
   --ring: #000000;
   --radius: 0px; /* Sharp corners for scientific look */
 }
-
+/* 
 [data-theme='dark'] {
   --background: #121212;
   --foreground: #e0e0e0;
@@ -88,7 +88,7 @@
   --border: #333333;
   --input: #333333;
   --ring: #ffffff;
-}
+} */
 
 @theme inline {
   --color-background: var(--background);
@@ -139,13 +139,4 @@
   body {
     @apply bg-background text-foreground min-h-[100vh] flex flex-col;
   }
-}
-
-html {
-  opacity: 0;
-}
-
-html[data-theme='dark'],
-html[data-theme='light'] {
-  opacity: initial;
 }
