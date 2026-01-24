@@ -14,7 +14,6 @@ export const Logo = (props: Props) => {
   const priority = priorityFromProps || 'low'
 
   return (
-  return (
     <span
       className={clsx(
         'font-serif font-bold text-xl tracking-tight uppercase',
