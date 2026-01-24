@@ -38,6 +38,8 @@ services:
   blog-nginx:
     image: nginx:stable-alpine
     container_name: blog-nginx
+    ports:
+      - "81:80"
     volumes:
       - ./nginx/conf.d:/etc/nginx/conf.d:ro
     depends_on:
@@ -50,11 +52,9 @@ services:
   blog-cloudflared:
     image: cloudflare/cloudflared:latest
     container_name: blog-cloudflared
-    ports:
-      - "80:80"
     env_file:
       - .env
-    command: tunnel run
+    command: tunnel --config /etc/cloudflared/config.yml run
     volumes:
       - ./cloudflared:/etc/cloudflared
     networks:
