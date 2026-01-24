@@ -14,6 +14,8 @@ type Args = {
   }>
 }
 export default async function Page({ searchParams: searchParamsPromise }: Args) {
+  if (process.env.IS_BUILDING === 'true') return null
+
   const { q: query } = await searchParamsPromise
   const payload = await getPayload({ config: configPromise })
 
@@ -82,6 +84,8 @@ export default async function Page({ searchParams: searchParamsPromise }: Args) 
 }
 
 export function generateMetadata(): Metadata {
+  if (process.env.IS_BUILDING === 'true') return {}
+
   return {
     title: `Payload Website Template Search`,
   }

@@ -44,6 +44,8 @@ type Args = {
 }
 
 export default async function Post({ params: paramsPromise }: Args) {
+  if (process.env.IS_BUILDING === 'true') return null
+
   const { isEnabled: draft } = await draftMode()
   const { slug = '' } = await paramsPromise
   // Decode to support slugs with special characters
@@ -80,6 +82,8 @@ export default async function Post({ params: paramsPromise }: Args) {
 }
 
 export async function generateMetadata({ params: paramsPromise }: Args): Promise<Metadata> {
+  if (process.env.IS_BUILDING === 'true') return {}
+
   const { slug = '' } = await paramsPromise
   // Decode to support slugs with special characters
   const decodedSlug = decodeURIComponent(slug)

@@ -18,6 +18,8 @@ type Args = {
 }
 
 export default async function Page({ params: paramsPromise }: Args) {
+  if (process.env.IS_BUILDING === 'true') return null
+
   const { pageNumber } = await paramsPromise
   const payload = await getPayload({ config: configPromise })
 

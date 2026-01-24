@@ -12,6 +12,8 @@ export const dynamic = 'force-static'
 export const revalidate = 600
 
 export default async function Page() {
+  if (process.env.IS_BUILDING === 'true') return null
+
   const payload = await getPayload({ config: configPromise })
 
   const posts = await payload.find({
@@ -57,6 +59,8 @@ export default async function Page() {
 }
 
 export function generateMetadata(): Metadata {
+  if (process.env.IS_BUILDING === 'true') return {}
+
   return {
     title: `Payload Website Template Posts`,
   }
