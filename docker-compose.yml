@@ -50,6 +50,8 @@ services:
   blog-cloudflared:
     image: cloudflare/cloudflared:latest
     container_name: blog-cloudflared
+    ports:
+      - "80:80"
     env_file:
       - .env
     command: tunnel run
