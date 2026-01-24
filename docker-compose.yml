@@ -38,21 +38,22 @@ services:
     restart: always
 
   nginx:
-    container_name: blog-nginx
     image: nginx:stable-alpine
-    ports:
-      - '8081:80'
+    container_name: blog-nginx
     volumes:
       - ./nginx/conf.d:/etc/nginx/conf.d:ro
     depends_on:
       - payload
     networks:
       - blog-net
+      - cloudflare-net
     restart: always
 
 networks:
   blog-net:
     driver: bridge
+  cloudflare-net:
+    external: true
 
 volumes:
   postgres_data:
