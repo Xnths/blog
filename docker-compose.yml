@@ -11,7 +11,7 @@ services:
       - PAYLOAD_SECRET=${PAYLOAD_SECRET}
       - NEXT_PUBLIC_SERVER_URL=${NEXT_PUBLIC_SERVER_URL}
     depends_on:
-      db:
+      blog-db:
         condition: service_healthy
     networks:
       - blog-net
@@ -43,7 +43,7 @@ services:
     volumes:
       - ./nginx/conf.d:/etc/nginx/conf.d:ro
     depends_on:
-      - payload
+      - blog-payload
     networks:
       - blog-net
       - cloudflare-net
