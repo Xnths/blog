@@ -9,7 +9,9 @@ import { CMSLink } from '@/components/Link'
 import { Logo } from '@/components/Logo/Logo'
 
 export async function Footer() {
-  const footerData: Footer = await getCachedGlobal('footer', 1)()
+  const footerData: Footer | null = await getCachedGlobal('footer', 1)()
+
+  if (!footerData && process.env.IS_BUILDING === 'true') return null
 
   const navItems = footerData?.navItems || []
 

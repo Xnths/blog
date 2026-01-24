@@ -5,7 +5,9 @@ import React from 'react'
 import type { Header } from '@/payload-types'
 
 export async function Header() {
-  const headerData: Header = await getCachedGlobal('header', 1)()
+  const headerData: Header | null = await getCachedGlobal('header', 1)()
 
-  return <HeaderClient data={headerData} />
+  if (!headerData && process.env.IS_BUILDING === 'true') return null
+
+  return <HeaderClient data={headerData!} />
 }
