@@ -1,0 +1,11 @@
+tunnel: ${CLOUDFLARE_TUNNEL_ID}
+credentials-file: /etc/cloudflared/credentials.json
+
+no-quic: true
+protocol: http2
+
+ingress:
+  - hostname: blog.xnths.com
+    service: http://blog-nginx:80
+
+  - service: http_status:404

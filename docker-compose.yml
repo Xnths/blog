@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   blog-payload:
     container_name: blog-payload
@@ -48,6 +46,20 @@ services:
       - blog-net
       - cloudflare-net
     restart: always
+
+  blog-cloudflared:
+    image: cloudflare/cloudflared:latest
+    container_name: blog-cloudflared
+    env_file:
+      - .env
+    environment:
+      - CLOUDFLARE_TUNNEL_ID=${CLOUDFLARE_TUNNEL_ID}
+    command: tunnel run
+    volumes:
+      - ./cloudflared:/etc/cloudflared
+    networks:
+      - cloudflare-net
+    restart: unless-stopped
 
 networks:
   blog-net:
