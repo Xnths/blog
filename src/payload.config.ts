@@ -89,4 +89,9 @@ export default buildConfig({
     },
     tasks: [],
   },
+  logger: {
+    options: {
+      level: 'debug',
+    },
+  },
 })
