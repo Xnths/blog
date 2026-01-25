@@ -44,24 +44,20 @@ ENV NODE_ENV production
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
-# Copy public folder
+# Copy public assets
 COPY --from=builder /app/public ./public
 
 # Copy standalone Next.js build
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
-# Copy the full project so PayloadCMS can find payload.config.js
-# This fixes the TSConfig / config null errors
-COPY --chown=nextjs:nodejs . .
-
-# Set permissions for .next folder
-RUN mkdir .next && chown -R nextjs:nodejs .next
+# Copy only what PayloadCMS actually needs
+COPY --chown=nextjs:nodejs payload.config.* tsconfig.json ./
+COPY --chown=nextjs:nodejs src ./src
 
 USER nextjs
 
 EXPOSE 3000
 ENV PORT 3000
 
-# Start the standalone Next.js server
 CMD ["node", "server.js"]

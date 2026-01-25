@@ -4,8 +4,6 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    volumes:
-      - ./:/app
     environment:
       - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@blog-db:5432/${POSTGRES_DB}
       - PAYLOAD_SECRET=${PAYLOAD_SECRET}
