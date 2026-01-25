@@ -1,63 +1,68 @@
+# --------------------------
 # Base image
+# --------------------------
 FROM node:22.17.0-alpine AS base
 
-# Install system deps
 RUN apk add --no-cache libc6-compat bash git curl
 
 WORKDIR /app
 
-# Enable corepack and install pnpm
+# Enable pnpm
 RUN corepack enable pnpm
 
 # --------------------------
-# Install dependencies only when needed
+# Dependencies
 # --------------------------
 FROM base AS deps
 
 COPY pnpm-lock.yaml* package.json ./
-RUN pnpm i --frozen-lockfile
+RUN pnpm install --frozen-lockfile
 
 # --------------------------
-# Build the source code
+# Builder
 # --------------------------
 FROM base AS builder
 
 WORKDIR /app
+
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-# Enable corepack for pnpm
-RUN corepack enable pnpm
-
-# Build Next.js standalone output
-RUN IS_BUILDING=true pnpm run build
+ENV IS_BUILDING=true
+RUN pnpm run build
 
 # --------------------------
-# Production image
+# Production runner
 # --------------------------
 FROM base AS runner
 
 WORKDIR /app
-ENV NODE_ENV production
+ENV NODE_ENV=production
+ENV PORT=3000
 
-# Create non-root user
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nextjs
+# Non-root user
+RUN addgroup --system --gid 1001 nodejs \
+  && adduser --system --uid 1001 nextjs
 
-# Copy public assets
+# ---- REQUIRED FOR PAYLOAD ----
+# Payload runtime + CLI + adapters
+COPY --from=deps /app/node_modules ./node_modules
+
+# Payload config + source
+COPY payload.config.* tsconfig.json ./
+COPY src ./src
+
+# Payload migrations (CRITICAL)
+COPY migrations ./migrations
+
+# ---- NEXT.JS STANDALONE ----
 COPY --from=builder /app/public ./public
-
-# Copy standalone Next.js build
-COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
-COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
-
-# Copy only what PayloadCMS actually needs
-COPY --chown=nextjs:nodejs payload.config.* tsconfig.json ./
-COPY --chown=nextjs:nodejs src ./src
+COPY --from=builder /app/.next/standalone ./
+COPY --from=builder /app/.next/static ./.next/static
 
 USER nextjs
 
 EXPOSE 3000
-ENV PORT 3000
 
-CMD ["node", "server.js"]
+# Run migrations, then start server
+CMD ["sh", "-c", "pnpm exec payload migrate && node server.js"]
