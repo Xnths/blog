@@ -53,7 +53,7 @@ COPY payload.config.* tsconfig.json ./
 COPY src ./src
 
 # Payload migrations (CRITICAL)
-COPY migrations ./migrations
+COPY src/migrations ./src/migrations
 
 # ---- NEXT.JS STANDALONE ----
 COPY --from=builder /app/public ./public
