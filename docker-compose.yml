@@ -14,6 +14,8 @@ services:
     networks:
       - blog-net
     restart: always
+    volumes:
+      - ./media:/app/media
 
 
   blog-db:
@@ -70,3 +72,4 @@ networks:
 
 volumes:
   postgres_data:
+  media-data:
