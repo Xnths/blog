@@ -44,6 +44,9 @@ ENV PORT=3000
 RUN addgroup --system --gid 1001 nodejs \
   && adduser --system --uid 1001 nextjs
 
+RUN mkdir -p /app/media \
+  && chown -R node:node /app/media
+
 # ---- REQUIRED FOR PAYLOAD ----
 # Payload runtime + CLI + adapters
 COPY --from=deps /app/node_modules ./node_modules
