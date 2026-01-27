@@ -28,7 +28,6 @@ export async function Footer() {
               return <CMSLink className="text-foreground hover:underline" key={i} {...link} />
             })}
           </nav>
-          <ThemeSelector />
         </div>
       </div>
       <div className="container pb-12 text-center text-sm text-muted-foreground uppercase tracking-widest font-sans">
