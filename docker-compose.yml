@@ -45,6 +45,7 @@ services:
       - "81:80"
     volumes:
       - ./nginx/conf.d:/etc/nginx/conf.d:ro
+      - ./media:/app/media:ro
     depends_on:
       - blog-payload
     networks:

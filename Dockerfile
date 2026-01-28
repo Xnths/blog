@@ -45,7 +45,7 @@ RUN addgroup --system --gid 1001 nodejs \
   && adduser --system --uid 1001 nextjs
 
 RUN mkdir -p /app/media \
-  && chown -R node:node /app/media
+  && chown -R nextjs:nodejs /app/media
 
 # ---- REQUIRED FOR PAYLOAD ----
 # Payload runtime + CLI + adapters

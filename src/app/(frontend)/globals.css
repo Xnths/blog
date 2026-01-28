@@ -140,3 +140,18 @@
     @apply bg-background text-foreground min-h-[100vh] flex flex-col;
   }
 }
+
+/* RichText Customizations */
+.payload-richtext :where(code) {
+  @apply bg-muted text-foreground px-1.5 py-0.5 rounded-sm font-mono text-[0.9em] border border-border;
+}
+
+.payload-richtext :where(code)::before,
+.payload-richtext :where(code)::after {
+  content: '';
+}
+
+/* Ensure highlights and text colors are visible and look good */
+.payload-richtext span[style*='background-color'] {
+  @apply px-1 rounded-sm;
+}
