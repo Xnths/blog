@@ -33,6 +33,11 @@ const nextConfig = {
   reactStrictMode: true,
   redirects,
   output: 'standalone',
+  experimental: {
+    serverActions: {
+      bodySizeLimit: '50mb',
+    },
+  },
 }
 
 export default withPayload(nextConfig, { devBundleServerPackages: false })
