@@ -20,7 +20,7 @@ export const Logo = (props: Props) => {
         className
       )}
     >
-      Scientific Blog
+      log(x)
     </span>
   )
 }

@@ -2,6 +2,16 @@
 const config = {
   theme: {
     extend: {
+      colors: {
+        bauhaus: {
+          bg: '#F0EFE1',
+          red: '#D63426',
+          blue: '#2D68A8',
+          yellow: '#EBB424',
+          black: '#1A1A1A',
+          white: '#FFFFFF',
+        },
+      },
       typography: () => ({
         DEFAULT: {
           css: [

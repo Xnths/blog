@@ -71,15 +71,27 @@ export default async function Page({ params: paramsPromise }: Args) {
   const { hero, layout } = page
 
   return (
-    <article className="pt-16 pb-24">
+    <article className="min-h-screen bg-bauhaus-bg text-bauhaus-black font-sans overflow-x-hidden relative">
       <PageClient />
+      
+      {/* Grid Overlay */}
+      <div className="fixed inset-0 pointer-events-none opacity-5 z-0" style={{ 
+        backgroundImage: 'linear-gradient(#1A1A1A 1px, transparent 1px), linear-gradient(90deg, #1A1A1A 1px, transparent 1px)',
+        backgroundSize: '40px 40px'
+      }}></div>
+
       {/* Allows redirects for valid pages too */}
       <PayloadRedirects disableNotFound url={url} />
 
       {draft && <LivePreviewListener />}
 
-      <RenderHero {...hero} />
-      <RenderBlocks blocks={layout || []} />
+      <div className="container relative z-10 pt-16 pb-24">
+        {hero && <RenderHero {...hero} />}
+        
+        <div className="mt-12 border-l-4 border-bauhaus-black pl-8 ml-4 md:ml-0">
+           <RenderBlocks blocks={layout || []} />
+        </div>
+      </div>
     </article>
   )
 }

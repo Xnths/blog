@@ -68,4 +68,5 @@ USER nextjs
 EXPOSE 3000
 
 # Run migrations, then start server
-CMD ["sh", "-c", "pnpm exec payload migrate && node server.js"]
+# Run migrations, seed, then start server
+CMD ["sh", "-c", "pnpm exec payload migrate && pnpm run seed && node server.js"]

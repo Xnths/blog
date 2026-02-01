@@ -837,6 +837,7 @@ export interface Search {
     value: number | Post;
   };
   slug?: string | null;
+  heroImage?: (number | null) | Media;
   meta?: {
     title?: string | null;
     description?: string | null;
@@ -1528,6 +1529,7 @@ export interface SearchSelect<T extends boolean = true> {
   priority?: T;
   doc?: T;
   slug?: T;
+  heroImage?: T;
   meta?:
     | T
     | {

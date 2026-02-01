@@ -37,17 +37,18 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <link href="/favicon.ico" rel="icon" sizes="32x32" />
         <link href="/favicon.svg" rel="icon" type="image/svg+xml" />
       </head>
-      <body>
+      <body className='h-full flex-1'>
         <Providers>
           <AdminBar
             adminBarProps={{
               preview: isEnabled,
             }}
           />
-
-          <Header />
-          {children}
-          <Footer />
+          <div className='flex flex-col min-h-svh'>
+            <Header />
+            <main className='flex-1'>{children}</main>
+            <Footer />
+          </div>
         </Providers>
       </body>
     </html>
