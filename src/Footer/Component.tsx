@@ -1,5 +1,4 @@
 import { getCachedGlobal } from '@/utilities/getGlobals'
-import Link from 'next/link'
 import React from 'react'
 import type { Footer } from '@/payload-types'
 import { CMSLink } from '@/components/Link'
@@ -23,7 +22,7 @@ export async function Footer() {
          <div className="flex flex-col md:flex-row items-center justify-between gap-8">
             <div className="text-left">
               <p className="text-xl font-bold text-bauhaus-black">
-                "The real problem is not whether machines think but whether men do." - B.F. Skinner
+                &quot;The real problem is not whether machines think but whether men do.&quot; - B.F. Skinner
               </p>
               <p className="font-mono text-sm mt-2 opacity-70">
                  © {new Date().getFullYear()} — Log of Xnths

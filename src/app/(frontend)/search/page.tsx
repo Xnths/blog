@@ -87,7 +87,6 @@ export default async function Page({ searchParams: searchParamsPromise }: Args) 
         {posts.totalDocs > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
             {posts.docs.map((post, index) => {
-               // @ts-expect-error meta and heroImage are not typed in search collection result but exist
                const displayImage = post.meta?.image && typeof post.meta.image !== 'number' ? post.meta.image : 
                                     post.heroImage && typeof post.heroImage !== 'number' ? post.heroImage : null;
 

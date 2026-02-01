@@ -7,6 +7,8 @@ import configPromise from '@payload-config'
 export const dynamic = 'force-dynamic'
 
 export default async function HomePage() {
+  if (process.env.IS_BUILDING === 'true') return null
+
   const payload = await getPayload({ config: configPromise })
   const posts = await payload.find({
     collection: 'posts',
@@ -80,7 +82,9 @@ export default async function HomePage() {
       <div className="h-12 bg-bauhaus-black flex items-center justify-between px-4 overflow-hidden">
         {Array.from({ length: 20 }).map((_, i) => (
            <div key={i} className="flex gap-4 scroll-text whitespace-nowrap">
-             <span className="text-bauhaus-white font-mono">/// ALGORITHMIC BEAUTY ///</span>
+             <span className="text-bauhaus-white font-mono">
+               {`/// ALGORITHMIC BEAUTY ///`}
+             </span>
            </div>
         ))}
       </div>
@@ -143,7 +147,7 @@ export default async function HomePage() {
          </div>
          <div className="z-10 bg-bauhaus-bg p-8 border-4 border-bauhaus-black shadow-[12px_12px_0px_0px_#1A1A1A]">
             <p className="text-xl font-bold text-bauhaus-black max-w-md">
-              "Science does not work by proving statements true, but rather proving statements false" - Robert C. Martin
+              &quot;Science does not work by proving statements true, but rather proving statements false&quot; - Robert C. Martin
             </p>
          </div>
       </div>
