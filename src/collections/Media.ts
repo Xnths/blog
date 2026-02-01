@@ -23,16 +23,6 @@ export const Media: CollectionConfig = {
     read: anyone,
     update: authenticated,
   },
-  /*hooks: {
-    afterRead: [
-      ({ doc }) => {
-        if (doc?.url) {
-          doc.url = doc.url.replace('/media/', '/medias/')
-        }
-        return doc
-      },
-    ],
-  },*/
   fields: [
     {
       name: 'alt',
@@ -50,8 +40,8 @@ export const Media: CollectionConfig = {
     },
   ],
   upload: {
-    // Upload to the public/media directory in Next.js making them publicly accessible even outside of Payload
-    staticDir: path.resolve(dirname, '../../public/media'),
+    // Upload to the media directory - served by Nginx in production, Next.js in dev
+    staticDir: path.resolve(dirname, '../../media'),
     adminThumbnail: 'thumbnail',
     focalPoint: true,
     imageSizes: [
