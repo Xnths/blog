@@ -1,13 +1,20 @@
 # --------------------------
 # Base image
 # --------------------------
-FROM node:22.17.0-alpine AS base
+# Switch from Alpine to Debian slim (bookworm-slim) for ARM environments (Raspberry Pi).
+# Alpine uses musl which often forces slow, from-source compilation of native modules (like sharp, swc) on ARM.
+# Debian slim provides pre-built glibc binaries, significantly reducing build time and memory usage.
+FROM node:22.17.0-bookworm-slim AS base
 
-RUN apk add --no-cache libc6-compat bash git curl
+# Install common build dependencies. libc6-compat is unnecessary on debian.
+RUN apt-get update && apt-get install -y --no-install-recommends git curl \
+  && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
-# Enable pnpm
+# Enable pnpm and set a global store directory for caching
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
 RUN corepack enable pnpm
 
 # --------------------------
@@ -16,7 +23,9 @@ RUN corepack enable pnpm
 FROM base AS deps
 
 COPY pnpm-lock.yaml* package.json ./
-RUN pnpm install --frozen-lockfile
+
+# Utilize Docker BuildKit cache for pnpm store to speed up installations on subsequent builds
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
 
 # --------------------------
 # Builder
@@ -28,8 +37,12 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
+# Disable Next.js telemetry to save minor CPU and network time
+ENV NEXT_TELEMETRY_DISABLED=1
 ENV IS_BUILDING=true
-RUN pnpm run build
+
+# Utilize BuildKit cache for Next.js to drastically improve subsequent build times
+RUN --mount=type=cache,id=nextjs,target=/app/.next/cache pnpm run build
 
 # --------------------------
 # Production runner
@@ -39,6 +52,7 @@ FROM base AS runner
 WORKDIR /app
 ENV NODE_ENV=production
 ENV PORT=3000
+ENV NEXT_TELEMETRY_DISABLED=1
 
 # Non-root user
 RUN addgroup --system --gid 1001 nodejs \

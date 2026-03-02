@@ -1,6 +1,6 @@
 services:
-  blog-payload:
-    container_name: blog-payload
+  blog-payload-blue:
+    container_name: blog-payload-blue
     build:
       context: .
       dockerfile: Dockerfile
@@ -16,6 +16,28 @@ services:
     restart: always
     volumes:
       - ./media:/app/media
+    profiles:
+      - blue
+
+  blog-payload-green:
+    container_name: blog-payload-green
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@blog-db:5432/${POSTGRES_DB}
+      - PAYLOAD_SECRET=${PAYLOAD_SECRET}
+      - NEXT_PUBLIC_SERVER_URL=${NEXT_PUBLIC_SERVER_URL}
+    depends_on:
+      blog-db:
+        condition: service_healthy
+    networks:
+      - blog-net
+    restart: always
+    volumes:
+      - ./media:/app/media
+    profiles:
+      - green
 
 
   blog-db:
@@ -46,8 +68,6 @@ services:
     volumes:
       - ./nginx/conf.d:/etc/nginx/conf.d:ro
       - ./media:/app/media:ro
-    depends_on:
-      - blog-payload
     networks:
       - blog-net
       - cloudflare-net
