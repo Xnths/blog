@@ -7,6 +7,8 @@ edge-bind-address: 0.0.0.0
 edge-port: 443
 
 ingress:
+  - hostname: xnths.com
+    service: http://blog-nginx:80
   - hostname: blog.xnths.com
     service: http://blog-nginx:80
   - service: http_status:404
