@@ -10,6 +10,7 @@ const runSeed = async () => {
     console.log('Seeding database...')
     await seed({ 
       payload, 
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       req: { payload, user: undefined } as any 
     }) 
     console.log('Seed completed successfully.')

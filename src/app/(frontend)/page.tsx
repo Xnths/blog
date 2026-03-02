@@ -29,7 +29,7 @@ export default async function HomePage() {
 
           {/* NAV */}
           <nav className="flex justify-between items-center py-6 md:py-8 flex-wrap gap-4">
-            <a href="/" className="font-serif text-2xl font-black tracking-tight text-hero-dark">xnths</a>
+            <Link href="/" className="font-serif text-2xl font-black tracking-tight text-hero-dark">xnths</Link>
             
             {/* Desktop Nav */}
             <ul className="hidden md:flex gap-2 list-none flex-wrap">
@@ -202,16 +202,16 @@ export default async function HomePage() {
                   <div className="rounded-[24px] md:rounded-[28px] shadow-clay hover:-translate-y-1 hover:-translate-x-0.5 hover:shadow-clay-hover transition-all bg-noise-card p-6 md:p-8 flex flex-col gap-2 bg-hero-red [--clay-sh:#824433]">
                     <h3 className="font-serif text-xl font-bold leading-snug text-hero-dark">Refactoring: Beyond Code Quality</h3>
                     <p className="text-sm text-hero-dark/70 leading-relaxed mb-5">Notes on Martin Fowler’s principles applied to legacy Python environments.</p>
-                    <a className="self-start mt-2 text-[0.82rem] font-extrabold text-hero-dark flex items-center gap-1 group" href="/posts">
+                    <Link className="self-start mt-2 text-[0.82rem] font-extrabold text-hero-dark flex items-center gap-1 group" href="/posts">
                       Read post <span className="group-hover:translate-x-1 transition-transform">→</span>
-                    </a>
+                    </Link>
                   </div>
                   <div className="rounded-[24px] md:rounded-[28px] shadow-clay hover:-translate-y-1 hover:-translate-x-0.5 hover:shadow-clay-hover transition-all bg-noise-card p-6 md:p-8 flex flex-col gap-2 bg-hero-wood [--clay-sh:#725e43]">
                     <h3 className="font-serif text-xl font-bold leading-snug text-hero-dark">Skinner for Engineers</h3>
                     <p className="text-sm text-hero-dark/70 leading-relaxed mb-5">Understanding schedules of reinforcement to improve developer productivity and sprint velocity.</p>
-                    <a className="self-start mt-2 text-[0.82rem] font-extrabold text-hero-dark flex items-center gap-1 group" href="/posts">
+                    <Link className="self-start mt-2 text-[0.82rem] font-extrabold text-hero-dark flex items-center gap-1 group" href="/posts">
                       Read post <span className="group-hover:translate-x-1 transition-transform">→</span>
-                    </a>
+                    </Link>
                   </div>
                 </>
               )}
