@@ -78,7 +78,7 @@ fi
 echo "✅ Target environment $TARGET_ENV is up and running!"
 
 # Start database and other dependent services just in case
-docker compose up -d blog-db blog-cloudflared blog-nginx
+docker compose up -d blog-db blog-nginx
 
 # Switch Nginx backend
 echo "Switching Nginx backend to $TARGET_ENV..."
