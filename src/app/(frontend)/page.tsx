@@ -1,8 +1,14 @@
 import React from 'react'
-import Image from 'next/image'
 import Link from 'next/link'
+import Image from 'next/image'
 import { getPayload } from 'payload'
 import configPromise from '@payload-config'
+
+import { Badge } from '@/components/ui/badge'
+import { Progress } from '@/components/ui/progress'
+import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
+import { Button } from '@/components/ui/button'
+import { Menu, ExternalLink } from 'lucide-react'
 
 export const dynamic = 'force-dynamic'
 
@@ -12,183 +18,279 @@ export default async function HomePage() {
   const payload = await getPayload({ config: configPromise })
   const posts = await payload.find({
     collection: 'posts',
-    limit: 3,
+    limit: 4,
     sort: '-publishedAt',
   })
 
   return (
-    <main className="min-h-screen bg-bauhaus-bg text-bauhaus-black font-sans overflow-x-hidden">
-      {/* Grid Overlay for Texture */}
-      <div className="fixed inset-0 pointer-events-none opacity-5" style={{ 
-        backgroundImage: 'linear-gradient(#1A1A1A 1px, transparent 1px), linear-gradient(90deg, #1A1A1A 1px, transparent 1px)',
-        backgroundSize: '40px 40px'
-      }}></div>
+    <>
+      <div className="bg-hero-sand bg-noise font-sans text-hero-dark min-h-screen">
+        <div className="max-w-[1100px] mx-auto px-4 md:px-8 pb-24">
 
-      {/* Hero Section */}
-      <div className="relative min-h-[90vh] grid grid-cols-1 md:grid-cols-12 grid-rows-[auto_1fr] md:grid-rows-none">
-        
-        {/* Left Color Block & Title */}
-        <div className="md:col-span-5 flex flex-col justify-between p-8 md:p-16 border-r-4 border-bauhaus-black bg-bauhaus-bg z-10 relative">
-          <div>
-            <div className="w-16 h-16 bg-bauhaus-red rounded-full mb-8 animate-pulse"></div>
-            <h1 className="text-6xl md:text-8xl font-bold uppercase leading-[0.8] tracking-tighter mix-blend-multiply">
-              Log <br/>
-              <span className="text-bauhaus-blue">of</span><br/>
-              <span className="text-transparent stroke-text" style={{ WebkitTextStroke: '2px #1A1A1A' }}>X</span><span className="text-bauhaus-red">nths</span>
-            </h1>
-          </div>
-          <div className="mt-12 space-y-6">
-             <p className="text-xl md:text-2xl font-medium max-w-sm">
-              Exploring the intersection of <span className="text-bauhaus-red font-bold">software engineering</span>, <span className="text-bauhaus-blue font-bold">design</span> and <span className="text-bauhaus-yellow font-bold text-shadow-sm">psychology</span>.
-            </p>
-             <Link href="/posts" className="inline-block bg-bauhaus-black text-bauhaus-bg text-lg font-bold py-4 px-8 hover:bg-bauhaus-red transition-colors duration-300 shadow-[8px_8px_0px_0px_rgba(235,180,36,1)]">
-              READ ARCHIVES
-            </Link>
-          </div>
-        </div>
+          {/* NAV */}
+          <nav className="flex justify-between items-center py-6 md:py-8 flex-wrap gap-4">
+            <a href="/" className="font-serif text-2xl font-black tracking-tight text-hero-dark">xnths</a>
+            
+            {/* Desktop Nav */}
+            <ul className="hidden md:flex gap-2 list-none flex-wrap">
+              <li><a href="#research" className="text-hero-dark font-bold text-sm px-4 py-2 rounded-full bg-hero-surface shadow-clay-sm hover:translate-y-[-2px] hover:translate-x-[-1px] hover:shadow-clay-sm-hover transition-all block">Projects</a></li>
+              <li><a href="#posts" className="text-hero-dark font-bold text-sm px-4 py-2 rounded-full bg-hero-surface shadow-clay-sm hover:translate-y-[-2px] hover:translate-x-[-1px] hover:shadow-clay-sm-hover transition-all block">Blog</a></li>
+              <li><a href="#skills" className="text-hero-dark font-bold text-sm px-4 py-2 rounded-full bg-hero-surface shadow-clay-sm hover:translate-y-[-2px] hover:translate-x-[-1px] hover:shadow-clay-sm-hover transition-all block">Skills</a></li>
+              <li><a href="#contact" className="text-hero-dark font-bold text-sm px-4 py-2 rounded-full bg-hero-surface shadow-clay-sm hover:translate-y-[-2px] hover:translate-x-[-1px] hover:shadow-clay-sm-hover transition-all block">Contact</a></li>
+            </ul>
 
-        {/* Hero Image & Geometric Composition */}
-        <div className="md:col-span-7 relative border-b-4 md:border-b-0 border-bauhaus-black overflow-hidden flex flex-col">
-          {/* Top Bar Decoration */}
-          <div className="h-24 bg-bauhaus-yellow border-b-4 border-bauhaus-black flex items-center px-4 relative">
-             <span className="font-mono text-bauhaus-black font-bold text-2xl tracking-widest">01010011 01000011 01001001</span>
-             <div className="absolute right-0 h-full w-24 bg-bauhaus-red"></div>
-          </div>
-
-          <div className="relative flex-grow bg-bauhaus-blue flex items-center justify-center p-8 md:p-0">
-             {/* Geometric Shapes Behind */}
-             <div className="absolute top-10 right-10 w-40 h-40 bg-bauhaus-white rounded-full opacity-20"></div>
-             <div className="absolute bottom-10 left-10 w-64 h-64 bg-bauhaus-yellow opacity-20 transform rotate-45"></div>
-
-             {/* Hero Image Window */}
-             <div className="relative z-10 w-full max-w-xl aspect-square border-4 border-bauhaus-black bg-bauhaus-bg shadow-[20px_20px_0px_0px_#1A1A1A] group">
-                <Image
-                  src="/hero.png"
-                  alt="Abstract Computer Science"
-                  fill
-                  className="object-cover grayscale contrast-125 group-hover:grayscale-0 transition-all duration-500"
-                  priority
-                />
-                {/* Overlay Text */}
-                <div className="absolute bottom-4 left-[-2rem] bg-bauhaus-red text-bauhaus-white py-2 px-6 border-4 border-bauhaus-black">
-                   <span className="font-mono text-xl font-bold">SYSTEM.ROOT</span>
-                </div>
-             </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Decorative Divider */}
-      <div className="h-12 bg-bauhaus-black flex items-center justify-between px-4 overflow-hidden">
-        {Array.from({ length: 20 }).map((_, i) => (
-           <div key={i} className="flex gap-4 scroll-text whitespace-nowrap">
-             <span className="text-bauhaus-white font-mono">
-               {`/// ALGORITHMIC BEAUTY ///`}
-             </span>
-           </div>
-        ))}
-      </div>
-
-      {/* Recent Posts - Bauhaus Grid */}
-      <section className="min-h-screen p-8 md:p-16">
-        <h2 className="text-4xl md:text-6xl font-black mb-16 uppercase relative inline-block">
-          Recent<br/>Transmission
-          <div className="absolute -z-10 bottom-2 right-[-20px] w-full h-8 bg-bauhaus-yellow"></div>
-        </h2>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {posts.docs.map((post, index) => {
-             const displayImage = post.meta?.image && typeof post.meta.image !== 'number' ? post.meta.image : 
-                                  post.heroImage && typeof post.heroImage !== 'number' ? post.heroImage : null;
-
-             return (
-            <Link href={`/posts/${post.slug}`} key={post.id} className="group">
-              <div className={`relative border-4 border-bauhaus-black bg-white h-full transition-transform duration-300 group-hover:-translate-y-2 ${index === 1 ? 'md:mt-16' : ''}`}>
-                <div className="aspect-[4/3] bg-bauhaus-black relative overflow-hidden">
-                   {/* Fallback pattern if no image */}
-                   <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-bauhaus-bg via-bauhaus-black to-bauhaus-black opacity-20"></div>
-                   
-                   {/* Render Image Correctly if media exists */}
-                   {displayImage && displayImage.url && (
-                        <Image 
-                           src={displayImage.url} 
-                           alt={displayImage.alt || post.title}
-                           fill
-                           className="object-cover opacity-80 group-hover:opacity-100 transition-opacity"
-                        />
-                   )}
-                   
-                   <div className="absolute top-2 right-2 bg-bauhaus-bg px-2 py-1 border-2 border-bauhaus-black text-xs font-mono font-bold">
-                    {new Date(post.publishedAt || '').toLocaleDateString()}
-                   </div>
-                </div>
-                
-                <div className="p-6">
-                   <div className="w-8 h-1 bg-bauhaus-red mb-4"></div>
-                   <h3 className="text-2xl font-bold leading-tight mb-4 group-hover:text-bauhaus-blue transition-colors">
-                    {post.title}
-                   </h3>
-                   <div className="flex justify-end">
-                      <span className="text-3xl font-black text-bauhaus-bg text-stroke-2" style={{ WebkitTextStroke: '1px #1A1A1A' }}>
-                        {(index + 1).toString().padStart(2, '0')}
-                      </span>
-                   </div>
-                </div>
-              </div>
-            </Link>
-          )})}
-        </div>
-      
-      </section>
-      {/* Footer Element */}
-      <div className="h-64 bg-bauhaus-red border-t-4 border-bauhaus-black flex items-center justify-center p-8 text-center relative overflow-hidden">
-         <div className="absolute inset-0 flex items-center justify-center opacity-10">
-            <h2 className="text-[20rem] font-black text-bauhaus-black leading-none">MID</h2>
-         </div>
-         <div className="z-10 bg-bauhaus-bg p-8 border-4 border-bauhaus-black shadow-[12px_12px_0px_0px_#1A1A1A]">
-            <p className="text-xl font-bold text-bauhaus-black max-w-md">
-              &quot;Science does not work by proving statements true, but rather proving statements false&quot; - Robert C. Martin
-            </p>
-         </div>
-      </div>
-
-      {/* About Me Section */}
-      <section className="p-8 md:p-16 border-t-4 border-bauhaus-black bg-bauhaus-white relative overflow-hidden">
-         <div className="max-w-5xl mx-auto relative z-10">
-            <div className="flex flex-col md:flex-row gap-12 items-start md:items-center">
-               
-               {/* Geometric Profile Container */}
-               <div className="shrink-0 relative">
-                  <div className="w-48 h-48 border-4 border-bauhaus-black bg-bauhaus-bg shadow-[16px_16px_0px_0px_#2D68A8] relative overflow-hidden flex items-center justify-center">
-                      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,var(--tw-gradient-stops))] from-bauhaus-yellow via-transparent to-transparent opacity-50"></div>
-                      <span className="font-black text-8xl text-bauhaus-black">J</span>
+            {/* Mobile Nav */}
+            <div className="md:hidden">
+              <Sheet>
+                <SheetTrigger asChild>
+                  <Button variant="ghost" size="icon" className="text-hero-dark">
+                    <Menu className="h-6 w-6" />
+                    <span className="sr-only">Open menu</span>
+                  </Button>
+                </SheetTrigger>
+                <SheetContent side="right" className="bg-hero-sand border-none shadow-clay text-hero-dark p-8">
+                  <div className="flex flex-col gap-8 mt-12">
+                    <a href="#research" className="text-2xl font-serif font-black tracking-tight" >Projects</a>
+                    <a href="#posts" className="text-2xl font-serif font-black tracking-tight" >Blog</a>
+                    <a href="#skills" className="text-2xl font-serif font-black tracking-tight" >Skills</a>
+                    <a href="#contact" className="text-2xl font-serif font-black tracking-tight" >Contact</a>
                   </div>
-                  <div className="absolute -top-6 -left-6 text-6xl font-black text-bauhaus-red opacity-20 -z-10">
-                    X
-                  </div>
-               </div>
-
-               <div className="grow">
-                  <h2 className="text-4xl md:text-5xl font-black mb-8 uppercase">
-                    About <span className="text-bauhaus-blue">The</span> Author
-                  </h2>
-                  <div className="prose-lg md:prose-xl font-medium leading-relaxed text-bauhaus-black text-justify">
-                    <p>
-                      <span className="font-bold">Jonathas</span> (long for Xnths) is a computer scientist at <span className="font-bold">USP</span> (Universidade de São Paulo) and a software engineer who has been developing software since 2015. 
-                    </p>
-                    <p className="mt-4">
-                      His work connects <span className="bg-bauhaus-yellow px-1 border-b-2 border-bauhaus-black">agile methods</span> with <span className="bg-bauhaus-red text-bauhaus-white px-1 border-b-2 border-bauhaus-black">radical behaviorism</span>, drawing specifically on Skinnerian psychology to analyze and shape software development practices. By focusing on observable behavior, reinforcement, and feedback loops, he studies how teams and processes adapt over time, applying these principles to the design and evolution of software systems.
-                    </p>
-                  </div>
-               </div>
+                </SheetContent>
+              </Sheet>
             </div>
-         </div>
+          </nav>
 
-         {/* Background Decor */}
-         <div className="absolute top-10 right-10 w-32 h-32 border-4 border-bauhaus-black rounded-full opacity-10"></div>
-         <div className="absolute bottom-10 left-1/2 w-64 h-2 bg-bauhaus-black transform -rotate-45 opacity-20"></div>
-      </section>
+          {/* HERO */}
+          <div className="flex items-center p-6 md:p-12 my-4 mb-10 bg-hero-sky rounded-[32px] md:rounded-[40px] shadow-clay overflow-hidden relative animate-fade-in-up min-h-[400px]">
+            <Image
+              src="/hero-image.png"
+              alt="Hero background"
+              fill
+              className="object-cover absolute inset-0 z-0 pointer-events-none"
+              priority
+            />
+            <div className="relative z-10 bg-white/30 backdrop-blur-md p-6 md:p-10 rounded-2xl md:rounded-3xl shadow-sm border border-white/50 max-w-xl">
+              <Badge variant="secondary" className="bg-white/60 hover:bg-white/70 shadow-sm border border-white/40 text-hero-dark rounded-full mb-4 px-3 py-1 text-xs font-extrabold tracking-wider uppercase">🎓 CS @ USP</Badge>
+              <h1 className="font-serif text-[clamp(2.4rem,5vw,4rem)] font-black leading-[1.05] tracking-tight mb-4 text-hero-dark">
+                Jonathas<br />Castilho<br /> <em className="italic opacity-80">Software Engineer</em>.
+              </h1>
+              <p className="text-[1rem] md:text-[1.05rem] text-hero-dark border-hero-dark/20 leading-relaxed font-semibold">
+                Building high-performance systems at the intersection of Software Engineering, Design and Radical Behaviorism.
+              </p>
+            </div>
+          </div>
 
-    </main>
+          {/* ABOUT STRIP */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6 mb-16 animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
+            <div className="bg-hero-green rounded-[24px] md:rounded-[28px] shadow-clay hover:-translate-y-1 hover:-translate-x-0.5 hover:shadow-clay-hover transition-all bg-noise-card p-6 md:p-7 [--clay-sh:#4e7a43]">
+              <div className="text-4xl mb-3">🧠</div>
+              <h3 className="font-serif text-lg font-bold mb-2 text-hero-dark">Behavioral Tech</h3>
+              <p className="text-sm text-hero-dark/70 leading-relaxed">Applying B.F. Skinner’s Radical Behaviorism to Agile methodologies and user experience design.</p>
+            </div>
+            <div className="bg-hero-wood rounded-[24px] md:rounded-[28px] shadow-clay hover:-translate-y-1 hover:-translate-x-0.5 hover:shadow-clay-hover transition-all bg-noise-card p-6 md:p-7 [--clay-sh:#725e43]">
+              <div className="text-4xl mb-3">🚀</div>
+              <h3 className="font-serif text-lg font-bold mb-2 text-hero-dark">Performance</h3>
+              <p className="text-sm text-hero-dark/70 leading-relaxed">Specialized in scalable architectures using Next.js, Django, and Elasticsearch for data-heavy applications.</p>
+            </div>
+            <div className="bg-hero-red rounded-[24px] md:rounded-[28px] shadow-clay hover:-translate-y-1 hover:-translate-x-0.5 hover:shadow-clay-hover transition-all bg-noise-card p-6 md:p-7 [--clay-sh:#824433]">
+              <div className="text-4xl mb-3">🏛️</div>
+              <h3 className="font-serif text-lg font-bold mb-2 text-hero-dark">Academic Background</h3>
+              <p className="text-sm text-hero-dark/70 leading-relaxed">Final year Computer Science student at IME-USP, focusing on software engineering.</p>
+            </div>
+          </div>
+
+          {/* PROJECTS */}
+          <section className="mb-16" id="research">
+            <div className="flex items-baseline gap-4 mb-6">
+              <h2 className="font-serif text-3xl font-black tracking-tight text-hero-dark">Featured Projects</h2>
+              <Badge variant="secondary" className="text-xs font-extrabold uppercase tracking-wider px-3 py-1 rounded-full shadow-sm bg-hero-green text-hero-dark hover:bg-hero-green/80 border-none">Active</Badge>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-5 md:gap-6">
+
+              <a href="https://uspaberta.ime.usp.br/" target="_blank" rel="noreferrer" className="group flex flex-col h-full bg-hero-wood rounded-[24px] md:rounded-[28px] shadow-clay hover:-translate-y-1 hover:-translate-x-0.5 hover:shadow-clay-hover transition-all bg-noise-card p-6 md:p-8 [--clay-sh:#725e43] outline-none">
+                <Badge variant="secondary" className="self-start text-[0.7rem] font-extrabold uppercase tracking-wider px-3 py-1 rounded-full mb-4 bg-white/40 shadow-sm text-hero-dark group-hover:bg-white/50 border-none transition-colors">Engineering</Badge>
+                <h3 className="font-serif text-xl font-bold mb-2 leading-tight text-hero-dark">USP Aberta</h3>
+                <p className="text-sm text-hero-dark/80 font-medium leading-relaxed mb-5 flex-grow">Developing a high-fidelity replica of the Lattes platform for USP. Focusing on data analysis, complex statistics generation, and scalable backend architecture.</p>
+                <div className="flex flex-wrap gap-2 mb-6">
+                  <Badge variant="secondary" className="text-[0.72rem] font-bold px-3 py-1 rounded-full bg-white/40 shadow-sm text-hero-dark group-hover:bg-white/50 border-none transition-colors">Django</Badge>
+                  <Badge variant="secondary" className="text-[0.72rem] font-bold px-3 py-1 rounded-full bg-white/40 shadow-sm text-hero-dark group-hover:bg-white/50 border-none transition-colors">Elasticsearch</Badge>
+                  <Badge variant="secondary" className="text-[0.72rem] font-bold px-3 py-1 rounded-full bg-white/40 shadow-sm text-hero-dark group-hover:bg-white/50 border-none transition-colors">PostgreSQL</Badge>
+                </div>
+                <div className="mt-auto pt-4 border-t border-hero-dark/10 flex items-center justify-between text-hero-dark font-bold text-sm">
+                  <span className="flex items-center gap-2">
+                    <span className="relative flex h-2.5 w-2.5">
+                       <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[rgba(34,197,94,0.6)] opacity-75"></span>
+                       <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[rgba(34,197,94,0.8)]"></span>
+                    </span>
+                    View Live Deployment
+                  </span>
+                  <ExternalLink className="w-4 h-4 group-hover:-translate-y-1 group-hover:translate-x-1 transition-transform" />
+                </div>
+              </a>
+
+              <a href="https://xnths.github.io/tcc-page/" target="_blank" rel="noreferrer" className="group flex flex-col h-full bg-hero-sky rounded-[24px] md:rounded-[28px] shadow-clay hover:-translate-y-1 hover:-translate-x-0.5 hover:shadow-clay-hover transition-all bg-noise-card p-6 md:p-8 [--clay-sh:#72a0b1] outline-none">
+                <Badge variant="secondary" className="self-start text-[0.7rem] font-extrabold uppercase tracking-wider px-3 py-1 rounded-full mb-4 bg-white/40 shadow-sm text-hero-dark group-hover:bg-white/50 border-none transition-colors">Research (TCC)</Badge>
+                <h3 className="font-serif text-xl font-bold mb-2 leading-tight text-hero-dark">Agile as Rule-Governed Behavior</h3>
+                <p className="text-sm text-hero-dark/80 font-medium leading-relaxed mb-5 flex-grow">Investigating software development practices through the lens of Radical Behaviorism, specifically analyzing Agile rituals in AR environments.</p>
+                <div className="flex flex-wrap gap-2 mb-6">
+                  <Badge variant="secondary" className="text-[0.72rem] font-bold px-3 py-1 rounded-full bg-white/40 shadow-sm text-hero-dark group-hover:bg-white/50 border-none transition-colors">Behaviorism</Badge>
+                  <Badge variant="secondary" className="text-[0.72rem] font-bold px-3 py-1 rounded-full bg-white/40 shadow-sm text-hero-dark group-hover:bg-white/50 border-none transition-colors">Agile</Badge>
+                  <Badge variant="secondary" className="text-[0.72rem] font-bold px-3 py-1 rounded-full bg-white/40 shadow-sm text-hero-dark group-hover:bg-white/50 border-none transition-colors">AR</Badge>
+                </div>
+                <div className="mt-auto pt-4 border-t border-hero-dark/10 flex items-center justify-between text-hero-dark font-bold text-sm">
+                  <span className="flex items-center gap-2">
+                    <span className="relative flex h-2.5 w-2.5">
+                       <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[rgba(34,197,94,0.6)] opacity-75"></span>
+                       <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[rgba(34,197,94,0.8)]"></span>
+                    </span>
+                    View Live Deployment
+                  </span>
+                  <ExternalLink className="w-4 h-4 group-hover:-translate-y-1 group-hover:translate-x-1 transition-transform" />
+                </div>
+              </a>
+
+              <a href="https://psicologojoaofernandes.com/" target="_blank" rel="noreferrer" className="group flex flex-col h-full bg-hero-green rounded-[24px] md:rounded-[28px] shadow-clay hover:-translate-y-1 hover:-translate-x-0.5 hover:shadow-clay-hover transition-all bg-noise-card p-6 md:p-8 [--clay-sh:#4e7a43] outline-none">
+                <Badge variant="secondary" className="self-start text-[0.7rem] font-extrabold uppercase tracking-wider px-3 py-1 rounded-full mb-4 bg-white/40 shadow-sm text-hero-dark group-hover:bg-white/50 border-none transition-colors">Full Stack</Badge>
+                <h3 className="font-serif text-xl font-bold mb-2 leading-tight text-hero-dark">Healthcare Management System</h3>
+                <p className="text-sm text-hero-dark/80 font-medium leading-relaxed mb-5 flex-grow">Custom SEO-optimized platform for a behaviorist psychology clinic. Integrated scheduling and patient management with a focus on high-conversion UI.</p>
+                <div className="flex flex-wrap gap-2 mb-6">
+                  <Badge variant="secondary" className="text-[0.72rem] font-bold px-3 py-1 rounded-full bg-white/40 shadow-sm text-hero-dark group-hover:bg-white/50 border-none transition-colors">Next.js</Badge>
+                  <Badge variant="secondary" className="text-[0.72rem] font-bold px-3 py-1 rounded-full bg-white/40 shadow-sm text-hero-dark group-hover:bg-white/50 border-none transition-colors">Tailwind</Badge>
+                  <Badge variant="secondary" className="text-[0.72rem] font-bold px-3 py-1 rounded-full bg-white/40 shadow-sm text-hero-dark group-hover:bg-white/50 border-none transition-colors">SEO</Badge>
+                </div>
+                <div className="mt-auto pt-4 border-t border-hero-dark/10 flex items-center justify-between text-hero-dark font-bold text-sm">
+                  <span className="flex items-center gap-2">
+                    <span className="relative flex h-2.5 w-2.5">
+                       <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[rgba(34,197,94,0.6)] opacity-75"></span>
+                       <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[rgba(34,197,94,0.8)]"></span>
+                    </span>
+                    View Live Deployment
+                  </span>
+                  <ExternalLink className="w-4 h-4 group-hover:-translate-y-1 group-hover:translate-x-1 transition-transform" />
+                </div>
+              </a>
+            </div>
+          </section>
+
+          {/* BLOG POSTS */}
+          <section className="mb-16" id="posts">
+            <div className="flex items-baseline gap-4 mb-6">
+              <h2 className="font-serif text-3xl font-black tracking-tight text-hero-dark">Insights</h2>
+              <Badge variant="secondary" className="text-xs font-extrabold uppercase tracking-wider px-3 py-1 rounded-full shadow-sm bg-hero-red text-hero-surface hover:bg-hero-red/80 border-none">Latest</Badge>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-5 md:gap-6">
+              {posts.docs.length > 0 ? (
+                posts.docs.map((post, index) => {
+                  const configs = [
+                    { bg: 'bg-hero-sky', sh: '[--clay-sh:#72a0b1]' },
+                    { bg: 'bg-hero-green', sh: '[--clay-sh:#4e7a43]' },
+                    { bg: 'bg-hero-wood', sh: '[--clay-sh:#725e43]' },
+                    { bg: 'bg-hero-red', sh: '[--clay-sh:#824433]' }
+                  ]
+                  const c = configs[index % configs.length]
+                  return (
+                    <div key={post.id} className={`rounded-[24px] md:rounded-[28px] shadow-clay hover:-translate-y-1 hover:-translate-x-0.5 hover:shadow-clay-hover transition-all bg-noise-card p-6 md:p-8 flex flex-col gap-2 ${c.bg} ${c.sh}`}>
+                      <h3 className="font-serif text-xl font-bold leading-snug text-hero-dark">{post.title}</h3>
+                      <Link className="self-start mt-2 text-[0.82rem] font-extrabold text-hero-dark flex items-center gap-1 group" href={`/posts/${post.slug}`}>
+                        Read post <span className="group-hover:translate-x-1 transition-transform">→</span>
+                      </Link>
+                    </div>
+                  )
+                })
+              ) : (
+                <>
+                  <div className="rounded-[24px] md:rounded-[28px] shadow-clay hover:-translate-y-1 hover:-translate-x-0.5 hover:shadow-clay-hover transition-all bg-noise-card p-6 md:p-8 flex flex-col gap-2 bg-hero-red [--clay-sh:#824433]">
+                    <h3 className="font-serif text-xl font-bold leading-snug text-hero-dark">Refactoring: Beyond Code Quality</h3>
+                    <p className="text-sm text-hero-dark/70 leading-relaxed mb-5">Notes on Martin Fowler’s principles applied to legacy Python environments.</p>
+                    <a className="self-start mt-2 text-[0.82rem] font-extrabold text-hero-dark flex items-center gap-1 group" href="/posts">
+                      Read post <span className="group-hover:translate-x-1 transition-transform">→</span>
+                    </a>
+                  </div>
+                  <div className="rounded-[24px] md:rounded-[28px] shadow-clay hover:-translate-y-1 hover:-translate-x-0.5 hover:shadow-clay-hover transition-all bg-noise-card p-6 md:p-8 flex flex-col gap-2 bg-hero-wood [--clay-sh:#725e43]">
+                    <h3 className="font-serif text-xl font-bold leading-snug text-hero-dark">Skinner for Engineers</h3>
+                    <p className="text-sm text-hero-dark/70 leading-relaxed mb-5">Understanding schedules of reinforcement to improve developer productivity and sprint velocity.</p>
+                    <a className="self-start mt-2 text-[0.82rem] font-extrabold text-hero-dark flex items-center gap-1 group" href="/posts">
+                      Read post <span className="group-hover:translate-x-1 transition-transform">→</span>
+                    </a>
+                  </div>
+                </>
+              )}
+            </div>
+          </section>
+
+          {/* SKILLS */}
+          <section className="mb-16" id="skills">
+            <div className="flex items-baseline gap-4 mb-6">
+              <h2 className="font-serif text-3xl font-black tracking-tight text-hero-dark">Stack</h2>
+              <Badge variant="secondary" className="text-xs font-extrabold uppercase tracking-wider px-3 py-1 rounded-full shadow-sm bg-hero-sky text-hero-dark hover:bg-hero-sky/80 border-none">Proficiency</Badge>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-[repeat(auto-fill,minmax(220px,1fr))] gap-5 md:gap-6">
+              <div className="rounded-[24px] shadow-clay hover:-translate-y-1 hover:-translate-x-0.5 hover:shadow-clay-hover transition-all bg-noise-card p-5 md:p-6 flex flex-col gap-3 bg-hero-sky [--clay-sh:#72a0b1]">
+                <div className="flex justify-between items-center">
+                  <span className="font-extrabold text-[0.9rem] text-hero-dark">Next.js / React</span>
+                  <span className="text-xs font-bold text-hero-dark/60">95%</span>
+                </div>
+                <Progress value={95} className="h-3 bg-white/40 [&>div]:bg-black/20 shadow-inner" />
+              </div>
+              <div className="rounded-[24px] shadow-clay hover:-translate-y-1 hover:-translate-x-0.5 hover:shadow-clay-hover transition-all bg-noise-card p-5 md:p-6 flex flex-col gap-3 bg-hero-green [--clay-sh:#4e7a43]">
+                <div className="flex justify-between items-center">
+                  <span className="font-extrabold text-[0.9rem] text-hero-dark">Django / Python</span>
+                  <span className="text-xs font-bold text-hero-dark/60">90%</span>
+                </div>
+                <Progress value={90} className="h-3 bg-white/40 [&>div]:bg-black/20 shadow-inner" />
+              </div>
+              <div className="rounded-[24px] shadow-clay hover:-translate-y-1 hover:-translate-x-0.5 hover:shadow-clay-hover transition-all bg-noise-card p-5 md:p-6 flex flex-col gap-3 bg-hero-wood [--clay-sh:#725e43]">
+                <div className="flex justify-between items-center">
+                  <span className="font-extrabold text-[0.9rem] text-hero-dark">PostgreSQL / ES</span>
+                  <span className="text-xs font-bold text-hero-dark/60">85%</span>
+                </div>
+                <Progress value={85} className="h-3 bg-white/40 [&>div]:bg-black/20 shadow-inner" />
+              </div>
+              <div className="rounded-[24px] shadow-clay hover:-translate-y-1 hover:-translate-x-0.5 hover:shadow-clay-hover transition-all bg-noise-card p-5 md:p-6 flex flex-col gap-3 bg-hero-red [--clay-sh:#824433]">
+                <div className="flex justify-between items-center">
+                  <span className="font-extrabold text-[0.9rem] text-hero-dark">Flutter / Mobile</span>
+                  <span className="text-xs font-bold text-hero-dark/60">75%</span>
+                </div>
+                <Progress value={75} className="h-3 bg-white/40 [&>div]:bg-black/20 shadow-inner" />
+              </div>
+              <div className="rounded-[24px] shadow-clay hover:-translate-y-1 hover:-translate-x-0.5 hover:shadow-clay-hover transition-all bg-noise-card p-5 md:p-6 flex flex-col gap-3 bg-hero-sand [--clay-sh:#b8a38b]">
+                <div className="flex justify-between items-center">
+                  <span className="font-extrabold text-[0.9rem] text-hero-dark">Linux / DevOps</span>
+                  <span className="text-xs font-bold text-hero-dark/60">88%</span>
+                </div>
+                <Progress value={88} className="h-3 bg-white/40 [&>div]:bg-black/20 shadow-inner" />
+              </div>
+              <div className="rounded-[24px] shadow-clay hover:-translate-y-1 hover:-translate-x-0.5 hover:shadow-clay-hover transition-all bg-noise-card p-5 md:p-6 flex flex-col gap-3 bg-hero-surface [--clay-sh:#c8c0b8]">
+                <div className="flex justify-between items-center">
+                  <span className="font-extrabold text-[0.9rem] text-hero-dark">Refactoring</span>
+                  <span className="text-xs font-bold text-hero-dark/60">80%</span>
+                </div>
+                <Progress value={80} className="h-3 bg-white/40 [&>div]:bg-black/20 shadow-inner" />
+              </div>
+            </div>
+          </section>
+
+          {/* CONTACT */}
+          <div className="bg-hero-green rounded-[32px] md:rounded-[36px] p-8 md:p-12 flex justify-between items-center gap-6 md:gap-8 shadow-clay bg-noise flex-col lg:flex-row [--clay-sh:#4e7a43]" id="contact">
+            <div className="text-center lg:text-left">
+              <h2 className="font-serif text-[1.8rem] md:text-[2rem] font-black tracking-tight mb-2 text-hero-surface">Let&rsquo;s collaborate.</h2>
+              <p className="text-hero-surface text-[0.95rem]">Interested in behavioral-driven software design or full-stack architecture?</p>
+            </div>
+            <div className="flex gap-3 flex-wrap justify-center">
+              <Button asChild className="rounded-full font-bold text-[0.9rem] text-hero-dark bg-hero-surface shadow-clay-sm hover:bg-hero-surface hover:-translate-y-1 hover:-translate-x-0.5 hover:shadow-clay-sm-hover transition-all">
+                <a href="mailto:jonathas@usp.br">✉️ Email</a>
+              </Button>
+              <Button asChild className="rounded-full font-bold text-[0.9rem] text-hero-dark bg-hero-surface shadow-clay-sm hover:bg-hero-surface hover:-translate-y-1 hover:-translate-x-0.5 hover:shadow-clay-sm-hover transition-all">
+                <a href="https://github.com/xnths" target="_blank" rel="noreferrer">💻 GitHub</a>
+              </Button>
+              <Button asChild className="rounded-full font-bold text-[0.9rem] text-hero-dark bg-hero-surface shadow-clay-sm hover:bg-hero-surface hover:-translate-y-1 hover:-translate-x-0.5 hover:shadow-clay-sm-hover transition-all">
+                <a href="https://linkedin.com/in/xnths" target="_blank" rel="noreferrer">💼 LinkedIn</a>
+              </Button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </>
   )
 }

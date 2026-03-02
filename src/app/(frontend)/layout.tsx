@@ -3,13 +3,28 @@ import type { Metadata } from 'next'
 import { cn } from '@/utilities/ui'
 import { GeistMono } from 'geist/font/mono'
 import { GeistSans } from 'geist/font/sans'
-import { Merriweather } from 'next/font/google'
+import { Fraunces, Merriweather, Nunito } from 'next/font/google'
 import React from 'react'
 
 const merriweather = Merriweather({
   subsets: ['latin'],
   weight: ['300', '400', '700'],
   variable: '--font-serif',
+})
+
+const fraunces = Fraunces({
+  subsets: ['latin'],
+  weight: ['400', '700', '900'],
+  style: ['normal', 'italic'],
+  variable: '--font-fraunces',
+  display: 'swap',
+})
+
+const nunito = Nunito({
+  subsets: ['latin'],
+  weight: ['400', '600', '700', '800'],
+  variable: '--font-nunito',
+  display: 'swap',
 })
 
 import { AdminBar } from '@/components/AdminBar'
@@ -29,7 +44,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 
   return (
     <html
-      className={cn(GeistSans.variable, GeistMono.variable, merriweather.variable)}
+      className={cn(GeistSans.variable, GeistMono.variable, merriweather.variable, fraunces.variable, nunito.variable)}
       lang="en"
       suppressHydrationWarning
     >
@@ -47,9 +62,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             }}
           />
           <div className='flex flex-col min-h-svh'>
-            <Header />
             <main className='flex-1'>{children}</main>
-            <Footer />
           </div>
         </Providers>
       </body>
