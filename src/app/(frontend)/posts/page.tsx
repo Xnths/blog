@@ -7,9 +7,19 @@ import React from 'react'
 import PageClient from './page.client'
 import Link from 'next/link'
 import Image from 'next/image'
+import { Badge } from '@/components/ui/badge'
 
 export const dynamic = 'force-static'
 export const revalidate = 600
+
+const cardConfigs = [
+  { bg: 'bg-hero-sky', sh: '[--clay-sh:#5a9ab0]' },
+  { bg: 'bg-hero-green', sh: '[--clay-sh:#4e7a43]' },
+  { bg: 'bg-hero-wood', sh: '[--clay-sh:#725e43]' },
+  { bg: 'bg-hero-red', sh: '[--clay-sh:#824433]' },
+  { bg: 'bg-hero-sand', sh: '[--clay-sh:#b8a38b]' },
+  { bg: 'bg-hero-surface', sh: '[--clay-sh:#c8c0b8]' },
+]
 
 export default async function Page() {
   if (process.env.IS_BUILDING === 'true') return null
@@ -33,99 +43,118 @@ export default async function Page() {
   })
 
   return (
-    <div className="min-h-screen bg-bauhaus-bg text-bauhaus-black font-sans overflow-x-hidden relative">
+    <div className="bg-hero-sand bg-noise font-sans text-hero-dark min-h-screen">
       <PageClient />
-      
-      {/* Grid Overlay for Texture */}
-      <div className="fixed inset-0 pointer-events-none opacity-5 z-0" style={{ 
-        backgroundImage: 'linear-gradient(#1A1A1A 1px, transparent 1px), linear-gradient(90deg, #1A1A1A 1px, transparent 1px)',
-        backgroundSize: '40px 40px'
-      }}></div>
 
-      <div className="container relative z-10 pt-24 pb-24">
-        
-        {/* Page Title with Bauhaus Style */}
-        <div className="mb-16 relative inline-block">
-          <div className="absolute -top-6 -left-6 w-24 h-24 bg-bauhaus-yellow -z-10 rounded-full"></div>
-          <h1 className="text-6xl md:text-8xl font-black uppercase tracking-tighter mix-blend-multiply relative z-10">
-            Trans<br/>
-            <span className="text-bauhaus-red">miss</span>ions
-          </h1>
-          <div className="h-4 w-full bg-bauhaus-black mt-4"></div>
+      <div className="max-w-[1100px] mx-auto px-4 md:px-8 pb-24">
+        {/* NAV */}
+        <nav className="flex justify-between items-center py-6 md:py-8">
+          <Link href="/" className="font-serif text-2xl font-black tracking-tight text-hero-dark">
+            xnths
+          </Link>
+          <Link
+            href="/"
+            className="text-hero-dark font-bold text-sm px-4 py-2 rounded-full bg-hero-surface shadow-clay-sm hover:translate-y-[-2px] hover:translate-x-[-1px] hover:shadow-clay-sm-hover transition-all"
+          >
+            ← Back
+          </Link>
+        </nav>
+
+        {/* HEADER */}
+        <div className="flex items-baseline gap-4 mb-8 mt-4">
+          <h1 className="font-serif text-4xl font-black tracking-tight text-hero-dark">Insights</h1>
+          <Badge
+            variant="secondary"
+            className="text-xs font-extrabold uppercase tracking-wider px-3 py-1 rounded-full shadow-sm bg-hero-red text-hero-surface hover:bg-hero-red/80 border-none"
+          >
+            All Posts
+          </Badge>
+          <span className="ml-auto text-sm font-bold text-hero-dark/60">
+            <PageRange
+              collection="posts"
+              currentPage={posts.page}
+              limit={12}
+              totalDocs={posts.totalDocs}
+            />
+          </span>
         </div>
 
-        <div className="mb-8 font-mono font-bold bg-bauhaus-black text-bauhaus-bg inline-block px-4 py-2">
-           <PageRange
-             collection="posts"
-             currentPage={posts.page}
-             limit={12}
-             totalDocs={posts.totalDocs}
-           />
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
+        {/* POSTS GRID */}
+        <div className="grid grid-cols-1 md:grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-5 md:gap-6">
           {posts.docs.map((post, index) => {
-             const displayImage = post.meta?.image && typeof post.meta.image !== 'number' ? post.meta.image : 
-                                  post.heroImage && typeof post.heroImage !== 'number' ? post.heroImage : null;
+            const c = cardConfigs[index % cardConfigs.length]
+            const displayImage =
+              post.meta?.image && typeof post.meta.image !== 'number'
+                ? post.meta.image
+                : post.heroImage && typeof post.heroImage !== 'number'
+                  ? post.heroImage
+                  : null
 
-             return (
-             <Link href={`/posts/${post.slug}`} key={index} className="group block h-full">
-                <div className="border-4 border-bauhaus-black bg-white h-full relative transition-all duration-300 group-hover:-translate-y-2 group-hover:shadow-[12px_12px_0px_0px_#D63426]">
-                  
-                  {/* Geometric Decoration on random cards */}
-                  {index % 3 === 0 && (
-                     <div className="absolute -top-4 -right-4 w-12 h-12 bg-bauhaus-blue rounded-full border-4 border-bauhaus-black z-20"></div>
-                  )}
-                  {index % 3 === 1 && (
-                     <div className="absolute -bottom-4 -left-4 w-8 h-8 bg-bauhaus-yellow rotate-45 border-4 border-bauhaus-black z-20"></div>
-                  )}
+            const publishedDate = post.publishedAt
+              ? new Date(post.publishedAt).toLocaleDateString('en-GB', {
+                  day: 'numeric',
+                  month: 'short',
+                  year: 'numeric',
+                })
+              : null
 
-                  <div className="aspect-[4/3] relative overflow-hidden border-b-4 border-bauhaus-black bg-bauhaus-black p-0">
-                     {/* Fallback pattern */}
-                     <div className="absolute inset-0 bg-[repeating-linear-gradient(45deg,#1A1A1A,#1A1A1A_10px,#222_10px,#222_20px)] opacity-20"></div>
-
-                     {displayImage && displayImage.url && (
-                        <Image
-                          src={displayImage.url}
-                          alt={displayImage.alt || post.title}
-                          fill
-                          className="object-cover opacity-90 grayscale contrast-125 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500"
-                        />
-                     )}
-                     
-                     <div className="absolute top-0 right-0 bg-bauhaus-bg border-l-4 border-b-4 border-bauhaus-black p-2 font-mono text-xs font-bold z-10">
-                        {new Date(post.publishedAt || '').toLocaleDateString('en-GB')}
-                     </div>
+            return (
+              <Link
+                key={post.id ?? index}
+                href={`/posts/${post.slug}`}
+                className={`group flex flex-col rounded-[24px] md:rounded-[28px] shadow-clay hover:-translate-y-1 hover:-translate-x-0.5 hover:shadow-clay-hover transition-all bg-noise-card overflow-hidden ${c.bg} ${c.sh}`}
+              >
+                {/* Hero image */}
+                {displayImage && displayImage.url && (
+                  <div className="relative aspect-[16/9] overflow-hidden">
+                    <Image
+                      src={displayImage.url}
+                      alt={
+                        typeof displayImage.alt === 'string' ? displayImage.alt : (post.title ?? '')
+                      }
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
                   </div>
+                )}
 
-                  <div className="p-8 flex flex-col h-[calc(100%-aspect-[4/3])]">
-                    <h3 className="text-3xl font-bold leading-none mb-4 group-hover:text-bauhaus-blue transition-colors">
-                      {post.title}
-                    </h3>
-                    <div className="flex-grow"></div> 
-                    <div className="flex items-center justify-between mt-6 pt-6 border-t-4 border-bauhaus-black border-dashed">
-                      <span className="font-mono text-sm font-bold bg-bauhaus-yellow px-2 py-1 border-2 border-bauhaus-black">
-                        READ_FILE
-                      </span>
-                      <div className="w-8 h-8 rounded-full bg-bauhaus-black flex items-center justify-center group-hover:bg-bauhaus-red transition-colors">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="#F0EFE1" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
-                        </svg>
-                      </div>
-                    </div>
+                <div className="p-6 md:p-8 flex flex-col gap-3 flex-1">
+                  {publishedDate && (
+                    <span className="text-[0.72rem] font-bold text-hero-dark/50 uppercase tracking-wider">
+                      {publishedDate}
+                    </span>
+                  )}
+
+                  <h2 className="font-serif text-xl font-bold leading-snug text-hero-dark">
+                    {post.title}
+                  </h2>
+
+                  {post.meta?.description && (
+                    <p className="text-sm text-hero-dark/70 leading-relaxed line-clamp-2">
+                      {post.meta.description}
+                    </p>
+                  )}
+
+                  <div className="mt-auto pt-4 flex items-center gap-1 text-[0.82rem] font-extrabold text-hero-dark">
+                    Read post{' '}
+                    <span className="group-hover:translate-x-1 transition-transform inline-block">
+                      →
+                    </span>
                   </div>
                 </div>
-             </Link>
-          )})}
+              </Link>
+            )
+          })}
         </div>
 
-        <div className="mt-16 flex justify-center">
-          {posts.totalPages > 1 && posts.page && (
-            <div className="bg-bauhaus-white border-4 border-bauhaus-black p-4 inline-block shadow-[8px_8px_0px_0px_#1A1A1A]">
-               <Pagination page={posts.page} totalPages={posts.totalPages} />
+        {/* PAGINATION */}
+        {posts.totalPages > 1 && posts.page && (
+          <div className="mt-12 flex justify-center">
+            <div className="bg-hero-surface rounded-[20px] shadow-clay p-4 inline-block [--clay-sh:#c8c0b8]">
+              <Pagination page={posts.page} totalPages={posts.totalPages} />
             </div>
-          )}
-        </div>
+          </div>
+        )}
       </div>
     </div>
   )
@@ -135,6 +164,8 @@ export function generateMetadata(): Metadata {
   if (process.env.IS_BUILDING === 'true') return {}
 
   return {
-    title: `Payload Website Template Posts`,
+    title: 'Insights — xnths',
+    description:
+      'Articles on software engineering, behavioral design, and high-performance systems.',
   }
 }
