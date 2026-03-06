@@ -47,7 +47,7 @@ docker compose --profile $TARGET_ENV up -d blog-payload-$TARGET_ENV || { echo "F
 
 # Wait for the target environment to become healthy (Next.js server started)
 echo "Waiting for $TARGET_ENV's Next.js server to start..."
-MAX_RETRIES=20
+MAX_RETRIES=40
 RETRY_COUNT=0
 HEALTHY=false
 
@@ -65,7 +65,7 @@ while [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
         break
     fi
     echo "Still waiting... (attempt $((RETRY_COUNT + 1))/$MAX_RETRIES)"
-    sleep 5
+    sleep 8
     RETRY_COUNT=$((RETRY_COUNT + 1))
 done
 

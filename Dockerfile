@@ -18,7 +18,7 @@ ENV PATH="$PNPM_HOME:$PATH"
 RUN corepack enable pnpm
 
 # --------------------------
-# Dependencies
+# All dependencies (dev + prod)
 # --------------------------
 FROM base AS deps
 
@@ -26,6 +26,15 @@ COPY pnpm-lock.yaml* package.json ./
 
 # Utilize Docker BuildKit cache for pnpm store to speed up installations on subsequent builds
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
+
+# --------------------------
+# Production-only dependencies
+# Stripping devDependencies here cuts the node_modules copy size
+# in the runner stage by ~50-70%, saving significant layer transfer time.
+# --------------------------
+FROM deps AS prod-deps
+
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm prune --prod
 
 # --------------------------
 # Builder
@@ -53,17 +62,20 @@ WORKDIR /app
 ENV NODE_ENV=production
 ENV PORT=3000
 ENV NEXT_TELEMETRY_DISABLED=1
+# Give corepack a writable home so it doesn't crash on the system user's /nonexistent home
+ENV COREPACK_HOME=/app/.corepack
+ENV HOME=/app
 
 # Non-root user
 RUN addgroup --system --gid 1001 nodejs \
   && adduser --system --uid 1001 nextjs
 
-RUN mkdir -p /app/media \
-  && chown -R nextjs:nodejs /app/media
+RUN mkdir -p /app/media /app/.corepack \
+  && chown -R nextjs:nodejs /app/media /app/.corepack
 
 # ---- REQUIRED FOR PAYLOAD ----
-# Payload runtime + CLI + adapters
-COPY --from=deps /app/node_modules ./node_modules
+# Copy only production node_modules (no devDependencies)
+COPY --from=prod-deps /app/node_modules ./node_modules
 
 # Payload config + source
 COPY payload.config.* tsconfig.json ./
@@ -81,6 +93,7 @@ USER nextjs
 
 EXPOSE 3000
 
-# Run migrations, then start server
-# Run migrations, seed, then start server
-CMD ["sh", "-c", "pnpm exec payload migrate && pnpm run seed && node server.js"]
+# Run migrations then start the server.
+# NOTE: seed is intentionally excluded — it's a one-time dev operation,
+# not something that should run on every container start.
+CMD ["sh", "-c", "pnpm exec payload migrate && node server.js"]
