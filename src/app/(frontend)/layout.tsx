@@ -42,7 +42,13 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 
   return (
     <html
-      className={cn(GeistSans.variable, GeistMono.variable, merriweather.variable, fraunces.variable, nunito.variable)}
+      className={cn(
+        GeistSans.variable,
+        GeistMono.variable,
+        merriweather.variable,
+        fraunces.variable,
+        nunito.variable,
+      )}
       lang="en"
       suppressHydrationWarning
     >
@@ -51,7 +57,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <link href="/favicon.ico" rel="icon" sizes="32x32" />
         <link href="/favicon.svg" rel="icon" type="image/svg+xml" />
       </head>
-      <body className='h-full flex-1'>
+      <body className="h-full flex-1">
         <Analytics />
         <Providers>
           <AdminBar
@@ -59,8 +65,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
               preview: isEnabled,
             }}
           />
-          <div className='flex flex-col min-h-svh'>
-            <main className='flex-1'>{children}</main>
+          <div className="flex flex-col min-h-svh">
+            <main className="flex-1">{children}</main>
           </div>
         </Providers>
       </body>
@@ -70,9 +76,26 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 
 export const metadata: Metadata = {
   metadataBase: new URL(getServerSideURL()),
+  title: {
+    default: 'Jonathas Castilho | Software Engineer',
+    template: '%s | xnths',
+  },
+  description:
+    'Building high-performance systems at the intersection of Software Engineering, Design and Radical Behaviorism.',
+  keywords: [
+    'Software Engineer',
+    'Next.js',
+    'React',
+    'TypeScript',
+    'Node.js',
+    'Behavioral Design',
+    'Brazil',
+  ],
+  authors: [{ name: 'Jonathas Castilho', url: 'https://xnths.com' }],
+  creator: 'Jonathas Castilho',
   openGraph: mergeOpenGraph(),
   twitter: {
     card: 'summary_large_image',
-    creator: '@payloadcms',
+    creator: '@xnths',
   },
 }

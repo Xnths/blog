@@ -108,7 +108,7 @@ export default async function HomePage() {
           {/* HERO */}
           <div className="flex items-center p-6 md:p-12 my-4 mb-10 bg-hero-sky rounded-[32px] md:rounded-[40px] shadow-clay overflow-hidden relative animate-fade-in-up min-h-[400px]">
             <Image
-              src="/hero-image.png"
+              src="/hero-image.webp"
               alt="Hero background"
               fill
               className="object-cover absolute inset-0 z-0 pointer-events-none"
