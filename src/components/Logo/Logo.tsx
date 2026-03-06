@@ -8,7 +8,7 @@ interface Props {
 }
 
 export const Logo = (props: Props) => {
-  const { className } = props
+  const { className, loading: _loading, priority: _priority } = props
 
   return (
     <span

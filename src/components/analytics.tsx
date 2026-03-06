@@ -6,7 +6,7 @@ import { analytics } from "@/lib/firebase"
 
 export default function Analytics() {
   useEffect(() => {
-    void analytics // just importing + running initializes it
+    const _init = analytics // just importing + running initializes it
   }, [])
 
   return null
