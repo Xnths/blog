@@ -37,7 +37,7 @@ export const revalidateSectionDelete =
 
 export const revalidateSite: GlobalAfterChangeHook = ({ doc, req: { context } }) => {
   if (!context.disableRevalidate) {
-    revalidateAll(['/', '/about', '/work', '/research', '/writing', '/colophon'])
+    revalidateAll(['/', '/about', '/work', '/research', '/colophon'])
   }
   return doc
 }

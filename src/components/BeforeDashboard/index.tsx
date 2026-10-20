@@ -19,7 +19,7 @@ const BeforeDashboard: React.FC = () => {
           <a href="/" target="_blank">
             visit the website
           </a>
-          {'. Writing posts are never touched by the seed.'}
+          {'. Posts and users are never touched by the seed.'}
         </li>
         <li>
           Every project, publication and the site profile has an English and a Português (Brasil)

@@ -12,7 +12,6 @@ export const SiteHeader: React.FC<{ locale: Locale; dict: Dictionary }> = ({ loc
   const items = [
     { href: localizedPath(locale, '/work'), label: dict.nav.work },
     { href: localizedPath(locale, '/research'), label: dict.nav.research },
-    { href: localizedPath(locale, '/writing'), label: dict.nav.writing },
     { href: localizedPath(locale, '/about'), label: dict.nav.about },
   ]
 

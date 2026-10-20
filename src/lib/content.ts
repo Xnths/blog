@@ -1,5 +1,5 @@
 import type { Locale } from '@/i18n/config'
-import type { Post, Project, Publication, Site } from '@/payload-types'
+import type { Project, Publication, Site } from '@/payload-types'
 import type { Where } from 'payload'
 
 import configPromise from '@payload-config'
@@ -88,70 +88,6 @@ export const getPublication = (
         : { and: [{ slug: { equals: slug } }, publishedOnly] },
     })
     return docs[0] ?? null
-  })
-
-export const getPosts = (limit = 50): Promise<Post[]> =>
-  cached(['posts', String(limit)], false, async () => {
-    const payload = await client()
-    const { docs } = await payload.find({
-      collection: 'posts',
-      depth: 1,
-      limit,
-      sort: '-publishedAt',
-      where: publishedOnly,
-      select: {
-        title: true,
-        slug: true,
-        language: true,
-        publishedAt: true,
-        meta: true,
-        heroImage: true,
-        populatedAuthors: true,
-        translationOf: true,
-      },
-    })
-    return docs as Post[]
-  })
-
-export const getPost = (slug: string, draft = false): Promise<Post | null> =>
-  cached(['post', slug], draft, async () => {
-    const payload = await client()
-    const { docs } = await payload.find({
-      collection: 'posts',
-      depth: 2,
-      limit: 1,
-      draft,
-      pagination: false,
-      where: draft
-        ? { slug: { equals: slug } }
-        : { and: [{ slug: { equals: slug } }, publishedOnly] },
-    })
-    return docs[0] ?? null
-  })
-
-export const getPostTranslation = (post: Post): Promise<Post | null> =>
-  cached(['post-translation', String(post.id)], false, async () => {
-    const payload = await client()
-    const target =
-      typeof post.translationOf === 'object' && post.translationOf
-        ? post.translationOf.id
-        : post.translationOf
-    const { docs } = await payload.find({
-      collection: 'posts',
-      depth: 0,
-      limit: 1,
-      pagination: false,
-      where: {
-        and: [
-          publishedOnly,
-          target
-            ? { id: { equals: target } }
-            : { translationOf: { equals: post.id } },
-        ],
-      },
-      select: { title: true, slug: true, language: true },
-    })
-    return (docs[0] as Post | undefined) ?? null
   })
 
 export const searchPortfolio = async (locale: Locale, q: string) => {

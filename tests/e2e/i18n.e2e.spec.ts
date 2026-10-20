@@ -47,8 +47,12 @@ test.describe('locale routing', () => {
   })
 
   test('legacy URLs redirect permanently', async ({ request }) => {
-    const res = await request.get('/posts/hello', { maxRedirects: 0 })
-    expect(res.status()).toBe(308)
-    expect(res.headers()['location']).toMatch(/\/en\/writing\/hello$/)
+    const posts = await request.get('/posts/hello', { maxRedirects: 0 })
+    expect(posts.status()).toBe(308)
+    expect(posts.headers()['location']).toMatch(/\/en$/)
+
+    const writing = await request.get('/pt-BR/writing', { maxRedirects: 0 })
+    expect(writing.status()).toBe(308)
+    expect(writing.headers()['location']).toMatch(/\/pt-BR$/)
   })
 })

@@ -1,8 +1,7 @@
 import type { Dictionary } from '@/i18n'
 import type { Locale } from '@/i18n/config'
-import type { Post, Project, Publication } from '@/payload-types'
+import type { Project, Publication } from '@/payload-types'
 
-import { formatDate } from '@/i18n'
 import { localizedPath } from '@/i18n/paths'
 import Link from 'next/link'
 import React from 'react'
@@ -56,27 +55,5 @@ export const PublicationItem: React.FC<{
     {publication.venue && (
       <p className="font-sans text-[0.85rem] text-muted-foreground">{publication.venue}</p>
     )}
-  </article>
-)
-
-export const PostItem: React.FC<{ post: Post; locale: Locale; dict: Dictionary }> = ({
-  post,
-  locale,
-  dict,
-}) => (
-  <article className="group border-t border-rule py-5">
-    <p className="label-mono mb-1.5">
-      {post.publishedAt ? formatDate(post.publishedAt, locale) : ''}
-      {post.language !== locale ? ` · ${dict.writing.writtenIn} ${post.language === 'pt-BR' ? 'Português' : 'English'}` : ''}
-    </p>
-    <h3 className="text-[1.15rem] leading-snug">
-      <Link
-        href={localizedPath(locale, `/writing/${post.slug}`)}
-        hrefLang={post.language ?? undefined}
-        className="no-underline group-hover:text-accent"
-      >
-        {post.title}
-      </Link>
-    </h3>
   </article>
 )

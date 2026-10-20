@@ -15,7 +15,6 @@ type Args = {
 }
 
 const sectionByCollection: Record<string, string> = {
-  posts: 'writing',
   projects: 'work',
   publications: 'research',
 }

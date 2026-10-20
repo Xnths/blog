@@ -3,11 +3,11 @@ import type { Metadata } from 'next'
 import { FigureView } from '@/components/paper/Figure'
 import { MetricGridView } from '@/components/paper/blocks'
 import { JsonLd } from '@/components/paper/JsonLd'
-import { PostItem, ProjectCard, PublicationItem } from '@/components/paper/Cards'
+import { ProjectCard, PublicationItem } from '@/components/paper/Cards'
 import { getDictionary } from '@/i18n'
 import { isLocale } from '@/i18n/config'
 import { localizedPath } from '@/i18n/paths'
-import { getPosts, getProjects, getPublications, getSite } from '@/lib/content'
+import { getProjects, getPublications, getSite } from '@/lib/content'
 import { findFigure } from '@/lib/lexical'
 import { buildOrganization, buildPerson, buildWebSite, graph } from '@/lib/seo/jsonld'
 import { generateMeta } from '@/utilities/generateMeta'
@@ -22,11 +22,10 @@ export default async function HomePage({ params }: Args) {
   if (!isLocale(locale)) notFound()
 
   const dict = getDictionary(locale)
-  const [site, projects, publications, posts] = await Promise.all([
+  const [site, projects, publications] = await Promise.all([
     getSite(locale),
     getProjects(locale),
     getPublications(locale),
-    getPosts(3),
   ])
 
   const flagship = projects.find((p) => p.kind === 'caseStudy' && p.featured) ?? projects[0]
@@ -181,21 +180,6 @@ export default async function HomePage({ params }: Args) {
         </section>
       )}
 
-      {posts.length > 0 && (
-        <section aria-labelledby="writing" className="page border-t border-rule py-12">
-          <div className="mb-2 flex items-baseline justify-between gap-4">
-            <h2 id="writing" className="text-[1.7rem]">
-              {dict.home.writing}
-            </h2>
-            <Link href={localizedPath(locale, '/writing')} className="link-arrow font-sans text-[0.85rem]">
-              {dict.home.allWriting}
-            </Link>
-          </div>
-          {posts.map((post) => (
-            <PostItem key={post.id} post={post} locale={locale} dict={dict} />
-          ))}
-        </section>
-      )}
 
       <section aria-labelledby="contact" className="page border-t border-rule py-12">
         <h2 id="contact" className="text-[1.7rem]">

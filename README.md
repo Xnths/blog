@@ -19,10 +19,9 @@ Every route lives under a locale prefix (`/en`, `/pt-BR`); `/` redirects by cook
 
 | Route | Content |
 | --- | --- |
-| `/{locale}` | Home: positioning, featured case study, capabilities, work, research, writing, contact |
+| `/{locale}` | Home: positioning, featured case study, capabilities, work, research, contact |
 | `/{locale}/work`, `/work/[slug]` | Projects; the USP Aberta case study has a sticky table of contents, numbered figures and references |
 | `/{locale}/research`, `/research/[slug]` | Publications with status, abstract and BibTeX |
-| `/{locale}/writing`, `/writing/[slug]` | Posts (each post has a `language`; translations are linked) |
 | `/{locale}/about`, `/colophon`, `/search` | About, design rationale with references, search |
 | `/sitemap.xml`, `/robots.txt`, `/llms.txt`, `/llms-full.txt`, `/cite/all.bib` | SEO and discoverability |
 
@@ -31,7 +30,7 @@ Every route lives under a locale prefix (`/en`, `/pt-BR`); `/` redirects by cook
 - **Projects** (`projects`): case studies, projects and sub-projects. Localized body, metrics, partners, links and references.
 - **Publications** (`publications`): papers, theses and pilots, with a generated BibTeX entry.
 - **Site profile** (`site` global): positioning, bio, capabilities, community, links and contact.
-- **Posts** (`posts`): writing, one language per post, linked to a translation with `translationOf`.
+- **Posts** (`posts`): kept in the admin but not shown on the site (there is no Writing section; `/{locale}/writing` redirects home).
 
 Localized fields store one value per locale; `fallback` is on, so a missing translation shows English.
 Slugs are never localized.
