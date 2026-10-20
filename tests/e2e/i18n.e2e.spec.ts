@@ -6,7 +6,8 @@ test.describe('locale routing', () => {
       headers: { 'Accept-Language': 'pt-BR,pt;q=0.9,en;q=0.8' },
       maxRedirects: 0,
     })
-    expect(pt.status()).toBe(307)
+    expect(pt.status()).toBe(308)
+    expect(pt.headers()['cache-control']).toContain('no-store')
     expect(pt.headers()['location']).toMatch(/\/pt-BR$/)
 
     const en = await request.get('/', {
