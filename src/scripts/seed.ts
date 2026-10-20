@@ -7,12 +7,8 @@ const runSeed = async () => {
   const payload = await getPayload({ config })
 
   try {
-    console.log('Seeding database...')
-    await seed({ 
-      payload, 
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      req: { payload, user: undefined } as any 
-    }) 
+    console.log('Seeding the portfolio...')
+    await seed({ payload, reset: process.argv.includes('--reset-portfolio') })
     console.log('Seed completed successfully.')
     process.exit(0)
   } catch (error) {
