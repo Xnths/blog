@@ -40,6 +40,24 @@ services:
       - green
 
 
+  blog-seed:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: seed
+    environment:
+      - DATABASE_URL=mongodb://${MONGO_USER}:${MONGO_PASSWORD}@blog-db:27017/${MONGO_DB}?authSource=admin
+      - PAYLOAD_SECRET=${PAYLOAD_SECRET}
+      - NEXT_PUBLIC_SERVER_URL=${NEXT_PUBLIC_SERVER_URL}
+    depends_on:
+      blog-db:
+        condition: service_healthy
+    networks:
+      - blog-net
+    restart: "no"
+    profiles:
+      - seed
+
   blog-db:
     container_name: blog-db
     image: mongo:7.0

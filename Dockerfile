@@ -54,6 +54,13 @@ ENV IS_BUILDING=true
 RUN --mount=type=cache,id=nextjs,target=/app/.next/cache pnpm run build
 
 # --------------------------
+# Seed (on demand): full source + dev dependencies, never part of the runtime image.
+#   docker compose --profile seed run --rm blog-seed
+# --------------------------
+FROM builder AS seed
+CMD ["pnpm", "seed"]
+
+# --------------------------
 # Production runner
 # --------------------------
 FROM base AS runner
@@ -81,9 +88,6 @@ COPY --from=prod-deps /app/node_modules ./node_modules
 COPY payload.config.* tsconfig.json ./
 COPY src ./src
 
-# Payload migrations (CRITICAL)
-COPY src/migrations ./src/migrations
-
 # ---- NEXT.JS STANDALONE ----
 COPY --from=builder /app/public ./public
 COPY --from=builder /app/.next/standalone ./
@@ -93,7 +97,5 @@ USER nextjs
 
 EXPOSE 3000
 
-# Run migrations then start the server.
-# NOTE: seed is intentionally excluded — it's a one-time dev operation,
-# not something that should run on every container start.
-CMD ["sh", "-c", "pnpm exec payload migrate && node server.js"]
+# MongoDB needs no schema migrations. Seeding is a separate, on-demand step (see the `seed` stage).
+CMD ["node", "server.js"]
