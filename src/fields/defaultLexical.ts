@@ -20,7 +20,7 @@ export const defaultLexical = lexicalEditor({
     InlineCodeFeature(),
     TextStateFeature(),
     LinkFeature({
-      enabledCollections: ['pages', 'posts'],
+      enabledCollections: ['posts', 'projects', 'publications'],
       fields: ({ defaultFields }) => {
         const defaultFieldsWithoutUrl = defaultFields.filter((field) => {
           if ('name' in field && field.name === 'url') return false

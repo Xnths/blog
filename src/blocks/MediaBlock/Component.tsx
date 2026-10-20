@@ -37,7 +37,7 @@ export const MediaBlock: React.FC<Props> = (props) => {
       className={cn(
         '',
         {
-          container: enableGutter,
+          "page": enableGutter,
         },
         className,
       )}

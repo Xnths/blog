@@ -16,7 +16,7 @@ import { Code } from '../../blocks/Code/config'
 import { MediaBlock } from '../../blocks/MediaBlock/config'
 import { generatePreviewPath } from '../../utilities/generatePreviewPath'
 import { populateAuthors } from './hooks/populateAuthors'
-import { revalidateDelete, revalidatePost } from './hooks/revalidatePost'
+import { revalidateSection, revalidateSectionDelete } from '../../hooks/revalidatePortfolio'
 
 import {
   MetaDescriptionField,
@@ -54,6 +54,7 @@ export const Posts: CollectionConfig<'posts'> = {
         generatePreviewPath({
           slug: data?.slug,
           collection: 'posts',
+          locale: data?.language,
           req,
         }),
     },
@@ -61,6 +62,7 @@ export const Posts: CollectionConfig<'posts'> = {
       generatePreviewPath({
         slug: data?.slug as string,
         collection: 'posts',
+        locale: data?.language as string,
         req,
       }),
     useAsTitle: 'title',
@@ -143,12 +145,14 @@ export const Posts: CollectionConfig<'posts'> = {
             }),
             MetaTitleField({
               hasGenerateFn: true,
+              overrides: { localized: false },
             }),
             MetaImageField({
               relationTo: 'media',
+              overrides: { localized: false },
             }),
 
-            MetaDescriptionField({}),
+            MetaDescriptionField({ overrides: { localized: false } }),
             PreviewField({
               // if the `generateUrl` function is configured
               hasGenerateFn: true,
@@ -160,6 +164,30 @@ export const Posts: CollectionConfig<'posts'> = {
           ],
         },
       ],
+    },
+    {
+      name: 'language',
+      type: 'select',
+      required: true,
+      defaultValue: 'en',
+      options: [
+        { label: 'English', value: 'en' },
+        { label: 'Português (Brasil)', value: 'pt-BR' },
+      ],
+      admin: {
+        position: 'sidebar',
+        description: 'Language the post is written in. Posts are not translated field by field.',
+      },
+    },
+    {
+      name: 'translationOf',
+      type: 'relationship',
+      relationTo: 'posts',
+      admin: {
+        position: 'sidebar',
+        description: 'Set this on the translation to link it to the original post.',
+      },
+      filterOptions: ({ id }) => ({ id: { not_in: id ? [id] : [] } }),
     },
     {
       name: 'publishedAt',
@@ -217,9 +245,9 @@ export const Posts: CollectionConfig<'posts'> = {
     slugField(),
   ],
   hooks: {
-    afterChange: [revalidatePost],
+    afterChange: [revalidateSection('writing')],
     afterRead: [populateAuthors],
-    afterDelete: [revalidateDelete],
+    afterDelete: [revalidateSectionDelete('writing')],
   },
   versions: {
     drafts: {

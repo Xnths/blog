@@ -1,49 +1,49 @@
+import type { Locale } from '@/i18n/config'
 import type { Metadata } from 'next'
 
-import type { Media, Page, Post, Config } from '../payload-types'
+import { locales, ogLocale } from '@/i18n/config'
+import { absoluteUrl, buildAlternates } from '@/i18n/paths'
 
-import { mergeOpenGraph } from './mergeOpenGraph'
-import { getServerSideURL } from './getURL'
-
-const getImageURL = (image?: Media | Config['db']['defaultIDType'] | null) => {
-  const serverUrl = getServerSideURL()
-
-  let url = serverUrl + '/website-template-OG.webp'
-
-  if (image && typeof image === 'object' && 'url' in image) {
-    const ogUrl = image.sizes?.og?.url
-
-    url = ogUrl ? serverUrl + ogUrl : serverUrl + image.url
-  }
-
-  return url
+type Args = {
+  title?: string | null
+  description?: string | null
+  /** Locale-less path, e.g. `/work/usp-aberta`. Use `''` for the home page. */
+  path: string
+  locale: Locale
+  type?: 'website' | 'article'
+  noindex?: boolean
+  /** When the page exists in a single locale only, point the canonical there and skip hreflang. */
+  singleLocale?: Locale
 }
 
-export const generateMeta = async (args: {
-  doc: Partial<Page> | Partial<Post> | null
-}): Promise<Metadata> => {
-  const { doc } = args
-
-  const ogImage = getImageURL(doc?.meta?.image)
-
-  const title = doc?.meta?.title
-    ? doc?.meta?.title + ' | Payload Website Template'
-    : 'Payload Website Template'
+/** Page metadata with canonical + hreflang alternates and Open Graph locale. */
+export const generateMeta = ({
+  title,
+  description,
+  path,
+  locale,
+  type = 'website',
+  noindex = false,
+  singleLocale,
+}: Args): Metadata => {
+  const alternates = singleLocale
+    ? { canonical: absoluteUrl(`/${singleLocale}${path}`) }
+    : buildAlternates(path, locale)
 
   return {
-    description: doc?.meta?.description,
-    openGraph: mergeOpenGraph({
-      description: doc?.meta?.description || '',
-      images: ogImage
-        ? [
-            {
-              url: ogImage,
-            },
-          ]
-        : undefined,
-      title,
-      url: Array.isArray(doc?.slug) ? doc?.slug.join('/') : '/',
-    }),
-    title,
+    title: title ?? undefined,
+    description: description ?? undefined,
+    alternates,
+    robots: noindex ? { index: false, follow: true } : undefined,
+    openGraph: {
+      type,
+      title: title ?? undefined,
+      description: description ?? undefined,
+      url: alternates.canonical,
+      siteName: 'Xnths',
+      locale: ogLocale[locale],
+      alternateLocale: locales.filter((l) => l !== locale).map((l) => ogLocale[l]),
+    },
+    twitter: { card: 'summary_large_image', title: title ?? undefined, description: description ?? undefined },
   }
 }

@@ -12,7 +12,15 @@ const redirects = async () => {
     source: '/:path((?!ie-incompatible.html$).*)', // all pages except the incompatibility page
   }
 
-  const redirects = [internetExplorerRedirect]
+  // The site used to live at /posts and /search without a locale prefix.
+  const legacyRedirects = [
+    { source: '/posts/page/:page', destination: '/en/writing', permanent: true },
+    { source: '/posts/:slug', destination: '/en/writing/:slug', permanent: true },
+    { source: '/posts', destination: '/en/writing', permanent: true },
+    { source: '/search', destination: '/en/search', permanent: true },
+  ]
+
+  const redirects = [internetExplorerRedirect, ...legacyRedirects]
 
   return redirects
 }

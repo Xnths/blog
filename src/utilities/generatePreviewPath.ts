@@ -1,33 +1,34 @@
 import { PayloadRequest, CollectionSlug } from 'payload'
 
+import { defaultLocale, isLocale } from '@/i18n/config'
+
 const collectionPrefixMap: Partial<Record<CollectionSlug, string>> = {
-  posts: '/posts',
-  pages: '',
+  posts: '/writing',
+  projects: '/work',
+  publications: '/research',
 }
 
 type Props = {
   collection: keyof typeof collectionPrefixMap
   slug: string
+  locale?: string | null
   req: PayloadRequest
 }
 
-export const generatePreviewPath = ({ collection, slug }: Props) => {
-  // Allow empty strings, e.g. for the homepage
+export const generatePreviewPath = ({ collection, slug, locale }: Props) => {
   if (slug === undefined || slug === null) {
     return null
   }
 
-  // Encode to support slugs with special characters
   const encodedSlug = encodeURIComponent(slug)
+  const safeLocale = isLocale(locale) ? locale : defaultLocale
 
   const encodedParams = new URLSearchParams({
     slug: encodedSlug,
     collection,
-    path: `${collectionPrefixMap[collection]}/${encodedSlug}`,
+    path: `/${safeLocale}${collectionPrefixMap[collection]}/${encodedSlug}`,
     previewSecret: process.env.PREVIEW_SECRET || '',
   })
 
-  const url = `/next/preview?${encodedParams.toString()}`
-
-  return url
+  return `/next/preview?${encodedParams.toString()}`
 }

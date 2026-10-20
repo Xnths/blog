@@ -34,6 +34,9 @@ const nextConfig = {
   redirects,
   output: 'standalone',
   experimental: {
+    globalNotFound: true,
+    webpackMemoryOptimizations: true,
+    cpus: 1,
     serverActions: {
       bodySizeLimit: '50mb',
     },
