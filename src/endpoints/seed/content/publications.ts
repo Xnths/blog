@@ -78,8 +78,8 @@ export const publications: PublicationSeed[] = [
   {
     slug: 'agile-as-rule-governed-behavior',
     type: 'thesis',
-    status: 'inPreparation',
-    year: 2026,
+    status: 'published',
+    year: 2025,
     featured: true,
     order: 30,
     authors: [me],
