@@ -21,12 +21,12 @@ export const siteSeed = {
     positioning: 'Software engineering for open academic data',
     affiliationLine: 'Xnths · IME-USP · São Paulo',
     shortBio:
-      'I am a software engineer and Computer Science student at IME-USP. Through Xnths, the company I have run since 2015, I engineer USP Aberta, the platform that makes the research output of the University of São Paulo searchable, and I study where information retrieval, data engineering and behavioral science meet in software.',
+      'I am a software and data engineer and a Computer Science student at IME-USP. I love to study, and I am autistic: I think best in structure, formal notation and small, careful steps. I spend my time where information retrieval, data engineering and behavioral science meet, and what I build most today is USP Aberta, a platform that makes the research of the University of São Paulo searchable.',
     contact: { email: 'jonathas@xnths.com', note: 'Projects, research collaboration, or a conversation about open academic data.' },
     seoDefaults: {
       title: 'Jonathas Castilho — Xnths | Software engineering for open academic data',
       description:
-        'Jonathas Castilho and Xnths engineer USP Aberta, an open academic-data platform for the University of São Paulo: data engineering, search, DevOps, security and privacy.',
+        'Jonathas Castilho is a software and data engineer and Computer Science student at IME-USP, building USP Aberta, an open academic-data platform for the University of São Paulo.',
     },
     capabilities: [
       { key: 'data', title: 'Data engineering', summary: 'Sanitizing ETL, record linkage across 1.5 million author-works, polite collection bots and a measured data-quality model.', projectSlug: 'usp-aberta', anchor: 'data-engineering' },
@@ -63,12 +63,12 @@ export const siteSeed = {
     positioning: 'Engenharia de software para dados acadêmicos abertos',
     affiliationLine: 'Xnths · IME-USP · São Paulo',
     shortBio:
-      'Sou engenheiro de software e estudante de Ciência da Computação no IME-USP. Por meio da Xnths, empresa que mantenho desde 2015, projeto o USP Aberta, a plataforma que torna pesquisável a produção de pesquisa da Universidade de São Paulo, e estudo onde recuperação de informação, engenharia de dados e ciência do comportamento se encontram no software.',
+      'Sou engenheiro de software e de dados e estudante de Ciência da Computação no IME-USP. Amo estudar e sou autista: penso melhor com estrutura, notação formal e passos pequenos e cuidadosos. Passo meu tempo onde recuperação de informação, engenharia de dados e ciência do comportamento se encontram, e o que mais construo hoje é o USP Aberta, uma plataforma que torna pesquisável a produção de pesquisa da Universidade de São Paulo.',
     contact: { email: 'jonathas@xnths.com', note: 'Projetos, colaboração em pesquisa ou uma conversa sobre dados acadêmicos abertos.' },
     seoDefaults: {
       title: 'Jonathas Castilho — Xnths | Engenharia de software para dados acadêmicos abertos',
       description:
-        'Jonathas Castilho e a Xnths projetam o USP Aberta, uma plataforma de dados acadêmicos abertos da Universidade de São Paulo: engenharia de dados, busca, DevOps, segurança e privacidade.',
+        'Jonathas Castilho é engenheiro de software e de dados e estudante de Ciência da Computação no IME-USP, e constrói o USP Aberta, uma plataforma de dados acadêmicos abertos da Universidade de São Paulo.',
     },
     capabilities: [
       { key: 'data', title: 'Engenharia de dados', summary: 'ETL com sanitização, ligação de registros entre 1,5 milhão de autorias, bots de coleta educados e um modelo de qualidade de dados medido.', projectSlug: 'usp-aberta', anchor: 'engenharia-de-dados' },
